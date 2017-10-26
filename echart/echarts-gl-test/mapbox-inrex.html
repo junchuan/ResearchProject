@@ -21,7 +21,7 @@
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-           $.getJSON('data/Sample2-DeltaCode.json',function (data) {
+           $.getJSON('data/Sample3-DeltaCode.json',function (data) {
                 
                 var trajectory = data.map(function (busLine, idx) {
                     var prevPt;
@@ -67,7 +67,7 @@
         },
                     mapbox: {
                         center: [-76.62, 39.28],
-                        zoom: 9,
+                        zoom: 7,
                         pitch: 50,
                         bearing: -10,
                         style: 'mapbox://styles/mapbox/dark-v9',
@@ -82,13 +82,13 @@
 
                         effect: {
                             show: true,
-                            constantSpeed: 10,
+                            constantSpeed: 8,
                             trailWidth: 2,
                             trailLength: 0.3,
                             // trailColor: [1, 1, 5],
                             trailOpacity: 1,
 
-                            spotIntensity: 4
+                            spotIntensity: 6
                         },
 
                         blendMode: 'lighter',
