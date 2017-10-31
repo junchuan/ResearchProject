@@ -50,7 +50,8 @@
                         coords: points,
                         lineStyle: {
                             
-                             color: scolor
+                             color: scolor,
+                             width: 1.5
                              //echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
                             
                          }
@@ -89,7 +90,11 @@
                         polyline: true,
 
 
-                        data: busLines
+
+                        data: busLines,
+                        
+                        progressiveThreshold: 500,
+                        progressive: 200
                     }]
                 });
 
