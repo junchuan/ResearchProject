@@ -23,7 +23,7 @@
 
             chart.showLoading();
 
-            $.getJSON('data/HERE_MD_logfill_func5.json', function (data) {
+            $.getJSON('data/HERE_MD_logfill_func2.json', function (data) {
 
                 chart.hideLoading();
                 var hStep = 300 / (data.length - 1);
@@ -63,6 +63,18 @@
                 });
 
                 chart.setOption({
+
+
+                    title : {
+                    text: 'VMT Visualization on Minor Arterial Road in Maryland',
+                    x:'center',
+                    y:'top',
+                    textStyle: {
+                           color: '#FFC107'
+                         }
+                      },
+                    
+
                     mapbox: {
                         center: [-76.88, 38.65],
                         zoom: 8,

@@ -7,7 +7,7 @@ permalink: /road-func4.html
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Maryland road network functional class 5</title>
+        <title>Maryland road network functional class 4</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Fullscreen Landscape on iOS -->
         <link rel="stylesheet" href="echart/echarts-gl-test/common.css">
@@ -25,7 +25,9 @@ permalink: /road-func4.html
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('echart/echarts-gl-test/data/HERE_MD_logfill_func5.json', function (data) {
+            chart.showLoading();
+            $.getJSON('echart/echarts-gl-test/data/HERE_MD_logfill_func4.json', function (data) {
+                chart.hideLoading();
                // var hStep = 300 / (data.length - 1);
 
                 var roads = data.map(function (road, idx) {
@@ -63,12 +65,22 @@ permalink: /road-func4.html
                 });
 
                 chart.setOption({
+
+                    title : {
+                    text: 'VMT Estimation for Collector Roads in Maryland',
+                    x:'center',
+                    y:'top',
+                    textStyle: {
+                           color: '#FFC107'
+                         }
+                      },
+                    
                     mapbox: {
                         center: [-76.88, 38.65],
                         zoom: 8,
                         pitch: 50,
                         bearing: -10,
-                        style: 'mapbox://styles/mapbox/light-v9',
+                        style: 'mapbox://styles/mapbox/dark-v9',
                         postEffect: {
                             enable: true
                         }
