@@ -25,14 +25,34 @@ permalink: /VMT_Sample.html
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('echart/echarts-gl-test/data/Sample4.json', function (data) {
 
-	   var trajectory=[]
-           $.each(data,function (key, val) {
-                    
-                    trajectory.push(val)
-                                      
+
+           $.getJSON('data/Sample4.json',function (data) {
+                
+                var trajectory = data.map(function (busLine, idx) {
+                    var prevPt;
+                    var points = [];
+                    for (var i = 0; i < busLine.length; i += 2) {
+                        var pt = [busLine[i], busLine[i + 1]];
+                        if (i > 0) {
+                            pt = [
+                                prevPt[0] + pt[0],
+                                prevPt[1] + pt[1]
+                            ];
+                        }
+                        prevPt = pt;
+
+                        points.push([pt[0] / 1e4, pt[1] / 1e4]);
+                    }
+                    return {
+                        coords: points
+                        //lineStyle: {
+                        //     color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
+                         //}
+                    };
                 });
+
+	  
 
            chart.setOption({
 	   
