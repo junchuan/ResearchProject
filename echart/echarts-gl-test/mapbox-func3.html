@@ -21,7 +21,11 @@
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('data/HERE_MD_fill_func5.json', function (data) {
+            chart.showLoading();
+
+            $.getJSON('data/HERE_MD_logfill_func5.json', function (data) {
+
+                chart.hideLoading();
                 var hStep = 300 / (data.length - 1);
 
                 var busLines = data.map(function (busLine, idx) {
@@ -51,7 +55,7 @@
                         lineStyle: {
                             
                              color: scolor,
-                             width: 1.5
+                             width: 1.0
                              //echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
                             
                          }
@@ -60,11 +64,11 @@
 
                 chart.setOption({
                     mapbox: {
-                        center: [-76.62, 39.28],
-                        zoom: 11,
+                        center: [-76.88, 38.65],
+                        zoom: 8,
                         pitch: 50,
                         bearing: -10,
-                        style: 'mapbox://styles/mapbox/light-v9',
+                        style: 'mapbox://styles/mapbox/dark-v9',
                         postEffect: {
                             enable: true
                         }
