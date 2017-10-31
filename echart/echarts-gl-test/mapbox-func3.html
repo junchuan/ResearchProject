@@ -21,14 +21,22 @@
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('data/HERE_MD_func3.json', function (data) {
+            $.getJSON('data/HERE_MD_fill_func3.json', function (data) {
                 var hStep = 300 / (data.length - 1);
+
                 var busLines = data.map(function (busLine, idx) {
+                    // add color element
+                    var scolor=busLine[0];
+
+
+
                     var prevPt;
                     var points = [];
-                    for (var i = 0; i < busLine.length; i += 2) {
+
+                    //change start point of i to 1
+                    for (var i = 1; i < busLine.length; i += 2) {
                         var pt = [busLine[i], busLine[i + 1]];
-                        if (i > 0) {
+                        if (i > 1) {
                             pt = [
                                 prevPt[0] + pt[0],
                                 prevPt[1] + pt[1]
@@ -42,7 +50,8 @@
                         coords: points,
                         lineStyle: {
                             
-                             color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
+                             color: scolor
+                             //echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
                             
                          }
                     };
