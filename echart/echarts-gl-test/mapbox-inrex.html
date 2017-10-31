@@ -20,8 +20,11 @@
         <script>
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
+            
+            chart.showLoading();
 
            $.getJSON('data/Sample4.json',function (data) {
+            chart.hideLoading();
                 
                 var trajectory = data.map(function (busLine, idx) {
                     var prevPt;
@@ -60,6 +63,7 @@
 	    title : {
             text: 'Echart Test',
             x:'center',
+            subtext: '10,000 vehicle trajectories sampled from 4,835,882 trajectories </br> data collected June 2015 by INRIX', 
             y:'top',
             textStyle: {
                    color: '#FFC107'
