@@ -25,9 +25,9 @@ permalink: /road-func4.html
            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
             var chart = echarts.init(document.getElementById('main'));
 
-            chart.showLoading();
+            //chart.showLoading();
             $.getJSON('echart/echarts-gl-test/data/HERE_MD_logfill_func4.json', function (data) {
-                chart.hideLoading();
+               // chart.hideLoading();
                // var hStep = 300 / (data.length - 1);
 
                 var roads = data.map(function (road, idx) {
