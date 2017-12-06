@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Test slides using reveal.js</title>
+
+		<meta name="description" content="Slide Test">
+		<meta name="author" content="Junchuan Fan">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+<style>
+.three-col-slide {
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+
+    -webkit-column-rule: 4px outset #ff00ff; /* Chrome, Safari, Opera */
+    -moz-column-rule: 4px outset #ff00ff; /* Firefox */
+    column-rule: 4px outset #ff00ff;
+}
+
+  .bg-1 { 
+      background-color: #1abc9c;
+      color: #ffffff;
+  }
+  .bg-2 { 
+      background-color: #474e5d;
+      color: #ffffff;
+  }
+  .bg-3 { 
+      background-color: #ffffff;
+      color: #555555;
+  }
+  .container-fluid {
+  	margin: 270px 270px;
+      padding: 170px 70px;
+      
+  }
+
+</style>
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+	<section>
+	<div class='container-fluid'>
+		<h6>This is normal size </h6>
+  <div>or 50 years, WWF has been protecting the future of nature. The world's leading conservation organization, WWF works in 100 countries and is supported by 1.2 million members in the United States and close to 5 million globally</div>
+  <div class="col-sm-4">.col-sm-4</div>
+  <div class="col-sm-4">.col-sm-4</div>
+</div>
+					 
+    <p >For 50 years, WWF has been protecting the future of nature. The world's leading conservation organization, WWF works in 100 countries and is supported by 1.2 million members in the United States and close to 5 million globally.</p>
+    
+
+	<p >
+	Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius.
+
+
+</p>
+						
+					
+
+	</section>
+
+				<!--slide discusses colloborators-->
+				<section >
+								
+
+
+				   <div class='container-fluid'>
+  <h1>Hello World!</h1>
+  <div class="row">
+    <div class="col-sm-6" style="background-color:yellow;">
+      <p>Lorem ipsum...</p>
+    </div>
+    <div class="col-sm-6" style="background-color:pink;">
+      <p>Sed ut perspiciatis...</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-3" style="background-color:yellow;">
+      <p>Lorem ipsum...</p>
+    </div>
+    <div class="col-sm-9" style="background-color:pink;">
+      <p>Sed ut perspiciatis...</p>
+    </div>
+  </div>
+  </div>
+				</section>
+				
+
+				<!-- slides discuss number of waypoints and trips -->
+				<section text-align="left">
+				  <div class="container-fluid bg-2 text-center">
+  <h3>What Am I?</h3>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+  <a href="#" class="btn btn-default btn-lg">
+    <span class="glyphicon glyphicon-search"></span> Search
+  </a>
+</div>
+					
+				</section>
+
+
+
+				
+				<!--slide shows the sampled trajectories-->
+				<section>
+
+				  <iframe class="stretch" data-src="https://smart-spatial.com/ResearchProject/VMT_Sample.html" > </iframe>
+
+				</section>
+
+				<!-- slides discuss snapping waypoints onto road segment -->
+				<section>
+
+				  <table style="width:100%; height:100%; border:none">
+				    <tr>
+				      <td colspan="2">
+					<p>Uncertainty in GPS positioning, simply using nearest segment to snap the waypoint is problematic</p>
+					<p><li>Find the <mark>10 nearest neighbor</mark> as the candidates.</li></p>
+
+					<p><li>Select the candidate with <mark>largest cosine</mark></li></p>
+					<p><li>Example: a1 < a2, but <mark>segment 2</mark> is the best candidate</li></p>
+					
+				      </td>
+
+				    </tr>
+				    <tr>
+				      <td>
+					<img width="400" height="150" style="border:none" data-src="media/snappnt1.png" alt="snap point">
+					
+					
+				      </td>
+				      <td>
+					<img width="400" height="150" style="border:none" data-src="media/snappnt2.png" alt="snap point">
+				      </td>
+				    </tr>
+				    </table>
+				 
+				</section>
+
+
+				<!-- slides discuss filling road segments -->
+				<section id="fragments">
+
+				  <table style="width:100%; height:100%; border:none">
+				
+				    <tr>
+				      
+				      <td colspan="2">
+					<p>Large and irregular time intervals between two waypoints (1~2mins) may cause gaps between road segments in the same trip.</p>
+					<span class="fragment"><li>Assuming drivers take the <mark>shortest path</mark> between the two recorded waypoints</li></span>
+				
+					<span class="fragment"><li>Shortest paths generated by Dijkstra algorithm are used to fill the gaps  </li></span>
+					
+				      </td>
+
+				    </tr>
+				    <tr>
+				      <td colspan="2">
+					<img width="450" height="150" style="border:none" data-src="media/fillgap.png" alt="snap point">
+					
+					
+				      </td>
+				     
+				    </tr>
+				    </table>
+				 
+				</section>
+
+				<!--slide discusses result for function class 3-->
+				<!--section data-background-image="media/Func2Road.png"-->
+				<section>
+								
+					<iframe class="stretch" data-src="https://smart-spatial.com/ResearchProject/road-func3.html" > </iframe>
+				</section>
+				
+				<!--slide discusses result for function class 4-->
+
+				<section>
+								
+					<iframe class="stretch" data-src="https://smart-spatial.com/ResearchProject/road-func4.html" > </iframe>
+				</section>
+
+
+				<!--slide discusses result for function class 5-->
+
+				<section>
+						<h5>VMT estimation results of local roads in Maryland</h5>	
+				<a href="https://smart-spatial.com/ResearchProject/road-func5.html">	
+				<img  style="border:none" data-src="media/Func5Road.PNG" alt="snap point">
+				</a>
+				</section>
+
+				<!--slide ongoing work-->
+				<section style="text-align: left;" data-background-image="media/static-track.png">
+					<p> Ongoing research...</p>
+					<br>
+					<p><li>
+					Calibration of Vehicle Trip <em>Sampling Bias </em>. 
+					</li></p>
+					<p><li>Further scaling up the algorithm to shorten the computing time.</li></p>			
+					
+				</section>
+
+				
+		
+
+						</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+
+				width: 1920,
+				height: 1080,
+				margin: 0.1,
+				minScale: 0.2,
+				maxScale: 1.5,
+
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				viewDistance:3,
+				prevewLinks:true,
+				//autoSlide: 30000,
+				loop:true,
+
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

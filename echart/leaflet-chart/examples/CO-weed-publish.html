@@ -1,0 +1,487 @@
+---
+permalink: /Weed-Movement.html
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track Human Movement from Twitter Data</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+    <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="http://cdn.bootcss.com/leaflet/0.7.7/leaflet.js"></script>
+<script src="echart/leaflet-chart/src/leaflet-echarts.js"></script>
+<script src="echart/leaflet-chart/lib/echarts.source.js"></script>
+<script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    var map = L.map('map');
+    var baseLayers = {
+        'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+}),
+
+        'OSM': L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}),
+
+    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: 'abcd',
+    minZoom: 0,
+    maxZoom: 18,
+    ext: 'png'
+}),
+        'GeoQ': L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map)
+    };
+
+    var layercontrol = L.control.layers(baseLayers, {
+        position: "bottomleft"
+    }).addTo(map);
+
+
+    var stateCoordMap={"Alabama": [-87.08188, 33.33005], "Arizona": [-111.99174, 33.53293], "Arkansas": [-92.17146, 35.40826], "California": [-119.1277, 35.01311], "Colorado": [-104.93947, 39.55043], "Connecticut": [-72.83732, 41.48065], "Delaware": [-75.53748, 39.06756], "Florida": [-81.34834, 28.32253], "Georgia": [-84.20435, 33.70995], "Hawaii": [-157.87477, 21.31176], "Idaho": [-115.23615, 46.15749], "Illinois": [-88.12842, 41.52651], "Indiana": [-86.56097, 40.02734], "Iowa": [-92.80799, 41.73651], "Kansas": [-95.98007, 39.00173], "Kentucky": [-85.04111, 37.88653], "Louisiana": [-90.65067, 30.30948], "Maine": [-70.31533, 43.63897], "Maryland": [-76.92423, 39.10505], "Massachusetts": [-71.42417, 42.33011], "Michigan": [-84.52071, 42.91138], "Minnesota": [-93.25244, 44.98242], "Mississippi": [-89.12559, 30.67034], "Missouri": [-92.09583, 38.7085], "Montana": [-111.03856, 45.67965], "Nebraska": [-96.74855, 40.66434], "Nevada": [-116.08603, 37.76343], "New Hampshire": [-70.83898, 43.04593], "New Jersey": [-74.36876, 40.4582], "New Mexico": [-106.43862, 35.05777], "New York": [-74.40662, 41.00797], "North Carolina": [-79.6648, 35.69591], "North Dakota": [-99.97266, 48.51257], "Ohio": [-83.02613, 40.35612], "Oklahoma": [-97.16188, 35.68875], "Oregon": [-121.97094, 44.68216], "Pennsylvania": [-77.19515, 40.28145], "Rhode Island": [-71.41283, 41.82399], "South Carolina": [-81.75652, 34.01704], "South Dakota": [-96.75755, 43.35734], "Tennessee": [-86.38192, 35.96555], "Texas": [-96.84096, 30.83032], "Utah": [-111.98037, 40.89073], "Vermont": [-73.21207, 44.47588], "Virginia": [-77.32607, 38.21653], "Washington": [-122.2298, 47.88125], "Washington, D.C.": [-77.03637, 38.89511], "West Virginia": [-79.12392, 38.99261], "Wisconsin": [-89.19677, 43.13611], "Wyoming": [-107.47942, 43.00277]};
+
+  var interaction_2013=[[{"name": "Arizona"}, {"name": "Colorado", "value": 2.93}], [{"name": "California"}, {"name": "Colorado", "value": 4.46}], [{"name": "Connecticut"}, {"name": "Colorado", "value": 0.14}], [{"name": "Florida"}, {"name": "Colorado", "value": 33.61}], [{"name": "Georgia"}, {"name": "Colorado", "value": 0.42}], [{"name": "Illinois"}, {"name": "Colorado", "value": 10.88}], [{"name": "Indiana"}, {"name": "Colorado", "value": 1.53}], [{"name": "Kansas"}, {"name": "Colorado", "value": 1.39}], [{"name": "Kentucky"}, {"name": "Colorado", "value": 0.56}], [{"name": "Louisiana"}, {"name": "Colorado", "value": 2.51}], [{"name": "Maryland"}, {"name": "Colorado", "value": 1.67}], [{"name": "Massachusetts"}, {"name": "Colorado", "value": 0.28}], [{"name": "Michigan"}, {"name": "Colorado", "value": 0.28}], [{"name": "Minnesota"}, {"name": "Colorado", "value": 0.7}], [{"name": "Mississippi"}, {"name": "Colorado", "value": 1.95}], [{"name": "Montana"}, {"name": "Colorado", "value": 0.42}], [{"name": "Nebraska"}, {"name": "Colorado", "value": 0.56}], [{"name": "Nevada"}, {"name": "Colorado", "value": 0.84}], [{"name": "New Jersey"}, {"name": "Colorado", "value": 0.42}], [{"name": "New Mexico"}, {"name": "Colorado", "value": 1.53}], [{"name": "New York"}, {"name": "Colorado", "value": 4.88}], [{"name": "North Carolina"}, {"name": "Colorado", "value": 0.14}], [{"name": "Oregon"}, {"name": "Colorado", "value": 0.7}], [{"name": "Pennsylvania"}, {"name": "Colorado", "value": 0.7}], [{"name": "Rhode Island"}, {"name": "Colorado", "value": 0.14}], [{"name": "South Dakota"}, {"name": "Colorado", "value": 0.84}], [{"name": "Tennessee"}, {"name": "Colorado", "value": 2.79}], [{"name": "Texas"}, {"name": "Colorado", "value": 4.18}], [{"name": "Utah"}, {"name": "Colorado", "value": 1.95}], [{"name": "Virginia"}, {"name": "Colorado", "value": 3.21}], [{"name": "Washington"}, {"name": "Colorado", "value": 10.88}], [{"name": "Washington, D.C."}, {"name": "Colorado", "value": 0.7}], [{"name": "Wisconsin"}, {"name": "Colorado", "value": 0.28}], [{"name": "Wyoming"}, {"name": "Colorado", "value": 0.84}]];
+  var point_2013_Top15=[
+  {'name': 'Indiana', 'value': 1.53},
+ {'name': 'New Mexico', 'value': 1.53},
+ {'name': 'Maryland', 'value': 1.67},
+ {'name': 'Mississippi', 'value': 1.95},
+ {'name': 'Utah', 'value': 1.95},
+ {'name': 'Louisiana', 'value': 2.51},
+ {'name': 'Tennessee', 'value': 2.79},
+ {'name': 'Arizona', 'value': 2.93},
+ {'name': 'Virginia', 'value': 3.21},
+ {'name': 'Texas', 'value': 4.18},
+ {'name': 'California', 'value': 4.46},
+ {'name': 'New York', 'value': 4.88},
+ {'name': 'Illinois', 'value': 10.88},
+ {'name': 'Washington', 'value': 10.88},
+ {'name': 'Florida', 'value': 33.61}];
+
+
+ var interaction_2014=[[{'name': 'Alabama'}, {'name': 'Colorado', 'value': 0.48}], [{'name': 'Arizona'}, {'name': 'Colorado', 'value': 2.51}], [{'name': 'Arkansas'}, {'name': 'Colorado', 'value': 0.12}], [{'name': 'California'}, {'name': 'Colorado', 'value': 12.9}], [{'name': 'Florida'}, {'name': 'Colorado', 'value': 1.31}], [{'name': 'Georgia'}, {'name': 'Colorado', 'value': 2.03}], [{'name': 'Hawaii'}, {'name': 'Colorado', 'value': 0.96}], [{'name': 'Illinois'}, {'name': 'Colorado', 'value': 17.32}], [{'name': 'Indiana'}, {'name': 'Colorado', 'value': 0.12}], [{'name': 'Kansas'}, {'name': 'Colorado', 'value': 1.08}], [{'name': 'Kentucky'}, {'name': 'Colorado', 'value': 0.24}], [{'name': 'Louisiana'}, {'name': 'Colorado', 'value': 2.15}], [{'name': 'Maryland'}, {'name': 'Colorado', 'value': 5.14}], [{'name': 'Massachusetts'}, {'name': 'Colorado', 'value': 1.31}], [{'name': 'Michigan'}, {'name': 'Colorado', 'value': 0.36}], [{'name': 'Minnesota'}, {'name': 'Colorado', 'value': 3.11}], [{'name': 'Mississippi'}, {'name': 'Colorado', 'value': 3.82}], [{'name': 'Missouri'}, {'name': 'Colorado', 'value': 2.75}], [{'name': 'Montana'}, {'name': 'Colorado', 'value': 0.48}], [{'name': 'Nebraska'}, {'name': 'Colorado', 'value': 0.96}], [{'name': 'Nevada'}, {'name': 'Colorado', 'value': 0.96}], [{'name': 'New Jersey'}, {'name': 'Colorado', 'value': 0.72}], [{'name': 'New Mexico'}, {'name': 'Colorado', 'value': 0.84}], [{'name': 'New York'}, {'name': 'Colorado', 'value': 8.24}], [{'name': 'North Carolina'}, {'name': 'Colorado', 'value': 1.67}], [{'name': 'Ohio'}, {'name': 'Colorado', 'value': 0.6}], [{'name': 'Oklahoma'}, {'name': 'Colorado', 'value': 1.19}], [{'name': 'Oregon'}, {'name': 'Colorado', 'value': 1.91}], [{'name': 'Pennsylvania'}, {'name': 'Colorado', 'value': 0.96}], [{'name': 'Rhode Island'}, {'name': 'Colorado', 'value': 0.84}], [{'name': 'South Carolina'}, {'name': 'Colorado', 'value': 0.36}], [{'name': 'Tennessee'}, {'name': 'Colorado', 'value': 3.82}], [{'name': 'Texas'}, {'name': 'Colorado', 'value': 4.54}], [{'name': 'Utah'}, {'name': 'Colorado', 'value': 1.43}], [{'name': 'Virginia'}, {'name': 'Colorado', 'value': 2.63}], [{'name': 'Washington'}, {'name': 'Colorado', 'value': 4.54}], [{'name': 'Washington, D.C.'}, {'name': 'Colorado', 'value': 1.43}], [{'name': 'West Virginia'}, {'name': 'Colorado', 'value': 0.12}], [{'name': 'Wisconsin'}, {'name': 'Colorado', 'value': 0.6}], [{'name': 'Wyoming'}, {'name': 'Colorado', 'value': 1.19}]];
+
+ var point_2014_Top15=[{'name': 'Oregon', 'value': 1.91},
+ {'name': 'Georgia', 'value': 2.03},
+ {'name': 'Louisiana', 'value': 2.15},
+ {'name': 'Arizona', 'value': 2.51},
+ {'name': 'Virginia', 'value': 2.63},
+ {'name': 'Missouri', 'value': 2.75},
+ {'name': 'Minnesota', 'value': 3.11},
+ {'name': 'Mississippi', 'value': 3.82},
+ {'name': 'Tennessee', 'value': 3.82},
+ {'name': 'Texas', 'value': 4.54},
+ {'name': 'Washington', 'value': 4.54},
+ {'name': 'Maryland', 'value': 5.14},
+ {'name': 'New York', 'value': 8.24},
+ {'name': 'California', 'value': 12.9},
+ {'name': 'Illinois', 'value': 17.32}];
+
+ var interaction_2015=[[{'name': 'Alabama'}, {'name': 'Colorado', 'value': 0.33}], [{'name': 'Arizona'}, {'name': 'Colorado', 'value': 9.86}], [{'name': 'Arkansas'}, {'name': 'Colorado', 'value': 0.07}], [{'name': 'California'}, {'name': 'Colorado', 'value': 18.29}], [{'name': 'Florida'}, {'name': 'Colorado', 'value': 1.96}], [{'name': 'Georgia'}, {'name': 'Colorado', 'value': 1.5}], [{'name': 'Hawaii'}, {'name': 'Colorado', 'value': 0.39}], [{'name': 'Idaho'}, {'name': 'Colorado', 'value': 0.07}], [{'name': 'Illinois'}, {'name': 'Colorado', 'value': 6.99}], [{'name': 'Indiana'}, {'name': 'Colorado', 'value': 1.63}], [{'name': 'Iowa'}, {'name': 'Colorado', 'value': 0.13}], [{'name': 'Kansas'}, {'name': 'Colorado', 'value': 3.46}], [{'name': 'Kentucky'}, {'name': 'Colorado', 'value': 1.7}], [{'name': 'Louisiana'}, {'name': 'Colorado', 'value': 0.26}], [{'name': 'Maine'}, {'name': 'Colorado', 'value': 0.46}], [{'name': 'Maryland'}, {'name': 'Colorado', 'value': 5.09}], [{'name': 'Massachusetts'}, {'name': 'Colorado', 'value': 0.98}], [{'name': 'Michigan'}, {'name': 'Colorado', 'value': 0.33}], [{'name': 'Minnesota'}, {'name': 'Colorado', 'value': 2.94}], [{'name': 'Mississippi'}, {'name': 'Colorado', 'value': 0.65}], [{'name': 'Missouri'}, {'name': 'Colorado', 'value': 2.61}], [{'name': 'Montana'}, {'name': 'Colorado', 'value': 0.2}], [{'name': 'Nebraska'}, {'name': 'Colorado', 'value': 1.24}], [{'name': 'Nevada'}, {'name': 'Colorado', 'value': 3.85}], [{'name': 'New Hampshire'}, {'name': 'Colorado', 'value': 0.46}], [{'name': 'New Jersey'}, {'name': 'Colorado', 'value': 0.65}], [{'name': 'New Mexico'}, {'name': 'Colorado', 'value': 1.31}], [{'name': 'New York'}, {'name': 'Colorado', 'value': 5.42}], [{'name': 'North Carolina'}, {'name': 'Colorado', 'value': 1.24}], [{'name': 'North Dakota'}, {'name': 'Colorado', 'value': 2.74}], [{'name': 'Ohio'}, {'name': 'Colorado', 'value': 3.33}], [{'name': 'Oklahoma'}, {'name': 'Colorado', 'value': 0.46}], [{'name': 'Oregon'}, {'name': 'Colorado', 'value': 1.89}], [{'name': 'Pennsylvania'}, {'name': 'Colorado', 'value': 0.65}], [{'name': 'Rhode Island'}, {'name': 'Colorado', 'value': 0.2}], [{'name': 'South Carolina'}, {'name': 'Colorado', 'value': 0.13}], [{'name': 'Tennessee'}, {'name': 'Colorado', 'value': 0.98}], [{'name': 'Texas'}, {'name': 'Colorado', 'value': 6.92}], [{'name': 'Utah'}, {'name': 'Colorado', 'value': 1.83}], [{'name': 'Virginia'}, {'name': 'Colorado', 'value': 1.05}], [{'name': 'Washington'}, {'name': 'Colorado', 'value': 2.35}], [{'name': 'Wisconsin'}, {'name': 'Colorado', 'value': 1.76}], [{'name': 'Wyoming'}, {'name': 'Colorado', 'value': 0.07}]];
+
+ var point_2015_Top15=[{'name': 'Oregon', 'value': 1.89},
+ {'name': 'Florida', 'value': 1.96},
+ {'name': 'Washington', 'value': 2.35},
+ {'name': 'Missouri', 'value': 2.61},
+ {'name': 'North Dakota', 'value': 2.74},
+ {'name': 'Minnesota', 'value': 2.94},
+ {'name': 'Ohio', 'value': 3.33},
+ {'name': 'Kansas', 'value': 3.46},
+ {'name': 'Nevada', 'value': 3.85},
+ {'name': 'Maryland', 'value': 5.09},
+ {'name': 'New York', 'value': 5.42},
+ {'name': 'Texas', 'value': 6.92},
+ {'name': 'Illinois', 'value': 6.99},
+ {'name': 'Arizona', 'value': 9.86},
+ {'name': 'California', 'value': 18.29}];
+
+ var interaction_2016=[[{'name': 'Alabama'}, {'name': 'Colorado', 'value': 0.45}], [{'name': 'Arizona'}, {'name': 'Colorado', 'value': 3.08}], [{'name': 'Arkansas'}, {'name': 'Colorado', 'value': 0.21}], [{'name': 'California'}, {'name': 'Colorado', 'value': 11.07}], [{'name': 'Delaware'}, {'name': 'Colorado', 'value': 0.53}], [{'name': 'Florida'}, {'name': 'Colorado', 'value': 16.11}], [{'name': 'Georgia'}, {'name': 'Colorado', 'value': 2.09}], [{'name': 'Hawaii'}, {'name': 'Colorado', 'value': 0.08}], [{'name': 'Idaho'}, {'name': 'Colorado', 'value': 0.04}], [{'name': 'Illinois'}, {'name': 'Colorado', 'value': 4.18}], [{'name': 'Indiana'}, {'name': 'Colorado', 'value': 2.58}], [{'name': 'Iowa'}, {'name': 'Colorado', 'value': 0.49}], [{'name': 'Kansas'}, {'name': 'Colorado', 'value': 4.18}], [{'name': 'Kentucky'}, {'name': 'Colorado', 'value': 3.2}], [{'name': 'Louisiana'}, {'name': 'Colorado', 'value': 0.62}], [{'name': 'Maryland'}, {'name': 'Colorado', 'value': 2.3}], [{'name': 'Massachusetts'}, {'name': 'Colorado', 'value': 2.26}], [{'name': 'Michigan'}, {'name': 'Colorado', 'value': 0.41}], [{'name': 'Minnesota'}, {'name': 'Colorado', 'value': 2.21}], [{'name': 'Mississippi'}, {'name': 'Colorado', 'value': 0.33}], [{'name': 'Missouri'}, {'name': 'Colorado', 'value': 2.3}], [{'name': 'Montana'}, {'name': 'Colorado', 'value': 0.08}], [{'name': 'Nebraska'}, {'name': 'Colorado', 'value': 1.35}], [{'name': 'Nevada'}, {'name': 'Colorado', 'value': 1.68}], [{'name': 'New Hampshire'}, {'name': 'Colorado', 'value': 0.04}], [{'name': 'New Jersey'}, {'name': 'Colorado', 'value': 1.35}], [{'name': 'New Mexico'}, {'name': 'Colorado', 'value': 0.82}], [{'name': 'New York'}, {'name': 'Colorado', 'value': 4.72}], [{'name': 'North Carolina'}, {'name': 'Colorado', 'value': 3.24}], [{'name': 'North Dakota'}, {'name': 'Colorado', 'value': 0.29}], [{'name': 'Ohio'}, {'name': 'Colorado', 'value': 1.31}], [{'name': 'Oklahoma'}, {'name': 'Colorado', 'value': 0.57}], [{'name': 'Oregon'}, {'name': 'Colorado', 'value': 0.62}], [{'name': 'Pennsylvania'}, {'name': 'Colorado', 'value': 3.2}], [{'name': 'Rhode Island'}, {'name': 'Colorado', 'value': 0.08}], [{'name': 'South Carolina'}, {'name': 'Colorado', 'value': 0.41}], [{'name': 'South Dakota'}, {'name': 'Colorado', 'value': 0.08}], [{'name': 'Tennessee'}, {'name': 'Colorado', 'value': 1.6}], [{'name': 'Texas'}, {'name': 'Colorado', 'value': 9.47}], [{'name': 'Utah'}, {'name': 'Colorado', 'value': 0.9}], [{'name': 'Virginia'}, {'name': 'Colorado', 'value': 0.82}], [{'name': 'Washington'}, {'name': 'Colorado', 'value': 3.08}], [{'name': 'Washington, D.C.'}, {'name': 'Colorado', 'value': 0.62}], [{'name': 'Wisconsin'}, {'name': 'Colorado', 'value': 1.23}], [{'name': 'Wyoming'}, {'name': 'Colorado', 'value': 0.16}]];
+
+ var point_2016_Top15=[{'name': 'Massachusetts', 'value': 2.26},
+ {'name': 'Maryland', 'value': 2.3},
+ {'name': 'Missouri', 'value': 2.3},
+ {'name': 'Indiana', 'value': 2.58},
+ {'name': 'Arizona', 'value': 3.08},
+ {'name': 'Washington', 'value': 3.08},
+ {'name': 'Kentucky', 'value': 3.2},
+ {'name': 'Pennsylvania', 'value': 3.2},
+ {'name': 'North Carolina', 'value': 3.24},
+ {'name': 'Illinois', 'value': 4.18},
+ {'name': 'Kansas', 'value': 4.18},
+ {'name': 'New York', 'value': 4.72},
+ {'name': 'Texas', 'value': 9.47},
+ {'name': 'California', 'value': 11.07},
+ {'name': 'Florida', 'value': 16.11}];
+    
+var interaction_2017=[[{'name': 'Alabama'}, {'name': 'Colorado', 'value': 1.35}], [{'name': 'Arizona'}, {'name': 'Colorado', 'value': 3.31}], [{'name': 'Arkansas'}, {'name': 'Colorado', 'value': 0.56}], [{'name': 'California'}, {'name': 'Colorado', 'value': 12.56}], [{'name': 'Connecticut'}, {'name': 'Colorado', 'value': 0.17}], [{'name': 'Florida'}, {'name': 'Colorado', 'value': 2.63}], [{'name': 'Georgia'}, {'name': 'Colorado', 'value': 1.29}], [{'name': 'Hawaii'}, {'name': 'Colorado', 'value': 0.11}], [{'name': 'Idaho'}, {'name': 'Colorado', 'value': 0.28}], [{'name': 'Illinois'}, {'name': 'Colorado', 'value': 4.76}], [{'name': 'Indiana'}, {'name': 'Colorado', 'value': 2.3}], [{'name': 'Iowa'}, {'name': 'Colorado', 'value': 0.73}], [{'name': 'Kansas'}, {'name': 'Colorado', 'value': 3.87}], [{'name': 'Kentucky'}, {'name': 'Colorado', 'value': 1.07}], [{'name': 'Louisiana'}, {'name': 'Colorado', 'value': 1.35}], [{'name': 'Maryland'}, {'name': 'Colorado', 'value': 2.02}], [{'name': 'Massachusetts'}, {'name': 'Colorado', 'value': 2.35}], [{'name': 'Michigan'}, {'name': 'Colorado', 'value': 0.28}], [{'name': 'Minnesota'}, {'name': 'Colorado', 'value': 3.53}], [{'name': 'Mississippi'}, {'name': 'Colorado', 'value': 0.11}], [{'name': 'Missouri'}, {'name': 'Colorado', 'value': 4.6}], [{'name': 'Nebraska'}, {'name': 'Colorado', 'value': 7.79}], [{'name': 'Nevada'}, {'name': 'Colorado', 'value': 5.77}], [{'name': 'New Jersey'}, {'name': 'Colorado', 'value': 1.51}], [{'name': 'New Mexico'}, {'name': 'Colorado', 'value': 0.56}], [{'name': 'New York'}, {'name': 'Colorado', 'value': 7.17}], [{'name': 'North Carolina'}, {'name': 'Colorado', 'value': 2.58}], [{'name': 'North Dakota'}, {'name': 'Colorado', 'value': 0.11}], [{'name': 'Ohio'}, {'name': 'Colorado', 'value': 1.68}], [{'name': 'Oklahoma'}, {'name': 'Colorado', 'value': 0.34}], [{'name': 'Oregon'}, {'name': 'Colorado', 'value': 0.06}], [{'name': 'Pennsylvania'}, {'name': 'Colorado', 'value': 5.27}], [{'name': 'Tennessee'}, {'name': 'Colorado', 'value': 1.57}], [{'name': 'Texas'}, {'name': 'Colorado', 'value': 7.68}], [{'name': 'Utah'}, {'name': 'Colorado', 'value': 0.56}], [{'name': 'Vermont'}, {'name': 'Colorado', 'value': 0.06}], [{'name': 'Virginia'}, {'name': 'Colorado', 'value': 0.78}], [{'name': 'Washington'}, {'name': 'Colorado', 'value': 1.29}], [{'name': 'Washington, D.C.'}, {'name': 'Colorado', 'value': 0.5}], [{'name': 'Wisconsin'}, {'name': 'Colorado', 'value': 1.12}]];
+
+var point_2017_Top15=[{'name': 'Indiana', 'value': 2.3},
+ {'name': 'Massachusetts', 'value': 2.35},
+ {'name': 'North Carolina', 'value': 2.58},
+ {'name': 'Florida', 'value': 2.63},
+ {'name': 'Arizona', 'value': 3.31},
+ {'name': 'Minnesota', 'value': 3.53},
+ {'name': 'Kansas', 'value': 3.87},
+ {'name': 'Missouri', 'value': 4.6},
+ {'name': 'Illinois', 'value': 4.76},
+ {'name': 'Pennsylvania', 'value': 5.27},
+ {'name': 'Nevada', 'value': 5.77},
+ {'name': 'New York', 'value': 7.17},
+ {'name': 'Texas', 'value': 7.68},
+ {'name': 'Nebraska', 'value': 7.79},
+ {'name': 'California', 'value': 12.56}];
+
+    map.setView(L.latLng(35.550339, -114.114129), 4);
+
+    var overlay = new L.echartsLayer(map, echarts);
+    var chartsContainer=overlay.getEchartsContainer();
+    var myChart=overlay.initECharts(chartsContainer);
+    window.onresize = myChart.onresize;
+
+
+    var option = {
+    color: ['gold','aqua','lime','teal','turquoise'],
+    title : {
+        text: 'Impact of Weed Legalization on Human Movement',
+        subtext:'CGIS Center, UMD',
+        x:'center',
+        textStyle : {
+            color: '#fff'
+        }
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: '{b}'
+    },
+    legend: {
+        orient: 'vertical',
+        x:'left',
+        y:'center',
+        data:['CO2013 Top15', 'CO2014 Top15','CO2015 Top15','CO2016 Top15','CO2017 Top15'],
+        selectedMode: 'single',
+        selected:{
+            'CO2014 Top15' : false,
+            'CO2015 Top15' : false,
+            'CO2016 Top15' : false,
+            'CO2017 Top15' : false
+           
+        },
+        textStyle : {
+            color: 'gold'
+        }
+    },
+    // toolbox: {
+    //     show : true,
+    //     orient : 'vertical',
+    //     x: 'right',
+    //     y: 'center',
+    //     feature : {
+    //         mark : {show: true},
+    //         dataView : {show: true, readOnly: false},
+    //         restore : {show: true},
+    //         saveAsImage : {show: true}
+    //     }
+    // },
+    // dataRange: {
+    //     min : 0,
+    //     max : 100,
+    //     calculable : true,
+    //     color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+    //     textStyle:{
+    //         color:'#fff'
+    //     }
+    // },
+    series : [
+        {
+            name: 'National',
+            type: 'map',
+            roam: true,
+            hoverable: false,
+            mapType: 'none',
+            itemStyle:{
+                normal:{
+                    borderColor:'rgba(100,149,237,1)',
+                    borderWidth:0.5,
+                    areaStyle:{
+                        color: '#1b1b1b'
+                    }
+                }
+            },
+            data:[],
+            markLine : {
+                smooth:true,
+                symbol: ['none', 'circle'],  
+                symbolSize : 1,
+                itemStyle : {
+                    normal: {
+                        color:'#fff',
+                        borderWidth:1,
+                        borderColor:'rgba(30,144,255,0.5)'
+                    }
+                },
+                data : [],
+                // [
+                   
+                //     [{name:'广州'},{name:'烟台'}],
+                //     [{name:'广州'},{name:'盐城'}]
+                // ],
+            },
+            geoCoord:  stateCoordMap
+            // {
+               
+            //     '青岛': [120.4651,36.3373],
+            //     '韶关': [113.7964,24.7028]
+            // }
+        },
+        
+        {
+            name: 'CO2013 Top15',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2013
+               
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    //return 10 + v/10
+                    return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2013_Top15
+            }
+        },
+
+        {
+            name: 'CO2014 Top15',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2014
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    //return 10 + v/10
+                    return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2014_Top15
+            }
+        },
+        {
+            name: 'CO2015 Top15',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2015
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    //return 10 + v/10
+                    return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2015_Top15
+            }
+        },
+
+        {
+            name: 'CO2016 Top15',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2016
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    //return 10 + v/10
+                    return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2016_Top15
+            }
+        },
+
+        {
+            name: 'CO2017 Top15',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2017
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    //return 10 + v/10
+                    return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:false}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2017_Top15
+            }
+        }
+    ]
+};                   
+overlay.setOption(option);
+</script>
+</body>
+</html>
