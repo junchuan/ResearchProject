@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Twitter Human Movement</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Fullscreen Landscape on iOS -->
+        <link rel="stylesheet" href="../echarts-gl-test/common.css">
+        <script src='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
+	<link href='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
+    </head>
+    <body>
+        <div id="main"></div>
+        <script src="../echarts_js/echarts.js"></script>
+        <script src="../echarts_js/theme/dark.js"></script>
+        <script src="../echarts_js/echarts-gl.js"></script>
+
+        <script src="../echarts-gl-test/lib/jquery.min.js"></script>
+        <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
+        var chart = echarts.init(document.getElementById('main'));
+
+        stateCoordMap={"Alabama": [-87.08188, 33.33005], "Arizona": [-111.99174, 33.53293], "Arkansas": [-92.17146, 35.40826], "California": [-119.1277, 35.01311], "Colorado": [-104.93947, 39.55043], "Connecticut": [-72.83732, 41.48065], "Delaware": [-75.53748, 39.06756], "Florida": [-81.34834, 28.32253], "Georgia": [-84.20435, 33.70995], "Hawaii": [-157.87477, 21.31176], "Idaho": [-115.23615, 46.15749], "Illinois": [-88.12842, 41.52651], "Indiana": [-86.56097, 40.02734], "Iowa": [-92.80799, 41.73651], "Kansas": [-95.98007, 39.00173], "Kentucky": [-85.04111, 37.88653], "Louisiana": [-90.65067, 30.30948], "Maine": [-70.31533, 43.63897], "Maryland": [-76.92423, 39.10505], "Massachusetts": [-71.42417, 42.33011], "Michigan": [-84.52071, 42.91138], "Minnesota": [-93.25244, 44.98242], "Mississippi": [-89.12559, 30.67034], "Missouri": [-92.09583, 38.7085], "Montana": [-111.03856, 45.67965], "Nebraska": [-96.74855, 40.66434], "Nevada": [-116.08603, 37.76343], "New Hampshire": [-70.83898, 43.04593], "New Jersey": [-74.36876, 40.4582], "New Mexico": [-106.43862, 35.05777], "New York": [-74.40662, 41.00797], "North Carolina": [-79.6648, 35.69591], "North Dakota": [-99.97266, 48.51257], "Ohio": [-83.02613, 40.35612], "Oklahoma": [-97.16188, 35.68875], "Oregon": [-121.97094, 44.68216], "Pennsylvania": [-77.19515, 40.28145], "Rhode Island": [-71.41283, 41.82399], "South Carolina": [-81.75652, 34.01704], "South Dakota": [-96.75755, 43.35734], "Tennessee": [-86.38192, 35.96555], "Texas": [-96.84096, 30.83032], "Utah": [-111.98037, 40.89073], "Vermont": [-73.21207, 44.47588], "Virginia": [-77.32607, 38.21653], "Washington": [-122.2298, 47.88125], "Washington, D.C.": [-77.03637, 38.89511], "West Virginia": [-79.12392, 38.99261], "Wisconsin": [-89.19677, 43.13611], "Wyoming": [-107.47942, 43.00277]};
+
+       var data_2013 = [['Arizona', 'Colorado', 2.928870292887029], ['California', 'Colorado', 4.463040446304045], ['Connecticut', 'Colorado', 0.1394700139470014], ['Florida', 'Colorado', 33.61227336122734], ['Georgia', 'Colorado', 0.41841004184100417], ['Illinois', 'Colorado', 10.878661087866108], ['Indiana', 'Colorado', 1.5341701534170153], ['Kansas', 'Colorado', 1.394700139470014], ['Kentucky', 'Colorado', 0.5578800557880056], ['Louisiana', 'Colorado', 2.510460251046025], ['Maryland', 'Colorado', 1.6736401673640167], ['Massachusetts', 'Colorado', 0.2789400278940028], ['Michigan', 'Colorado', 0.2789400278940028], ['Minnesota', 'Colorado', 0.697350069735007], ['Mississippi', 'Colorado', 1.9525801952580195], ['Montana', 'Colorado', 0.41841004184100417], ['Nebraska', 'Colorado', 0.5578800557880056], ['Nevada', 'Colorado', 0.8368200836820083], ['New Jersey', 'Colorado', 0.41841004184100417], ['New Mexico', 'Colorado', 1.5341701534170153], ['New York', 'Colorado', 4.881450488145049], ['North Carolina', 'Colorado', 0.1394700139470014], ['Oregon', 'Colorado', 0.697350069735007], ['Pennsylvania', 'Colorado', 0.697350069735007], ['Rhode Island', 'Colorado', 0.1394700139470014], ['South Dakota', 'Colorado', 0.8368200836820083], ['Tennessee', 'Colorado', 2.789400278940028], ['Texas', 'Colorado', 4.184100418410042], ['Utah', 'Colorado', 1.9525801952580195], ['Virginia', 'Colorado', 3.2078103207810322], ['Washington', 'Colorado', 10.878661087866108], ['Washington, D.C.', 'Colorado', 0.697350069735007], ['Wisconsin', 'Colorado', 0.2789400278940028], ['Wyoming', 'Colorado', 0.8368200836820083]]
+
+    var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var dataItem = data[i];
+        var fromCoord = stateCoordMap[dataItem[0]];
+        var toCoord = stateCoordMap[dataItem[1]];
+        if (fromCoord && toCoord) {
+            res.push({
+               // fromName: dataItem[0],
+               //toName: dataItem[1],
+                coords: [fromCoord, toCoord]
+            });
+        }
+    }
+    return res;
+}; 
+
+var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+
+
+var data_2013_convert=convertData(data_2013);
+        chart.setOption({
+            title : {
+                    text: 'Impact of marijuana legalization for human movement',
+                    subtext: "CGIS Center,UMD",
+                    x:'center',
+                    y:'top',
+                    textStyle: {
+                           color: '#FFC107'
+                         }
+                      },
+
+
+
+            mapbox: {
+                        center: [-104.93947, 39.55043],
+                        zoom: 4,
+                        pitch: 0,
+                        bearing: 0,
+                        style: 'mapbox://styles/mapbox/dark-v9',
+                        postEffect: {
+                            enable: true
+                        }
+                    },
+            series: [{
+                        type: 'lines3D',
+
+                        coordinateSystem: 'mapbox',
+
+                        effect: {
+                            show: true,
+                            period:2,
+                            constantSpeed: 10,
+                            trailWidth: 1,
+                            trailLength: 0.3,
+                            trailColor: '#a6c84c',
+                            trailOpacity: 1,
+
+                            spotIntensity: 3
+                        },
+                        lineStyle: {
+                            normal: {
+                                color: '#a6c84c',
+                                width: 2,
+                                curveness: 0.5,
+                                opacity:0
+                            }
+                        },
+
+
+
+
+                        data: data_2013_convert,
+                        
+                        //progressiveThreshold: 500,
+                        //progressive: 200
+                    }]
+                });
+
+                window.onresize = chart.resize;
+
+                window.addEventListener('keydown', function () {
+                    chart.dispatchAction({
+                        type: 'lines3DToggleEffect',
+                        seriesIndex: 0
+                    });
+                });
+         
+        </script>
+    </body>
+</html>
