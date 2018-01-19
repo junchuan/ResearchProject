@@ -28,7 +28,7 @@ permalink: /MSHA_Traj.html
 
             chart.showLoading();
 
-           $.getJSON('echart/echarts-gl-test/data/Jan2017.json',function (data) {
+           $.getJSON('echart/echarts-gl-test/data/Q12017.json',function (data) {
                 chart.hideLoading();
 
                 var trajectory = data.map(function (busLine, idx) {
@@ -85,7 +85,7 @@ permalink: /MSHA_Traj.html
                         effect: {
                             show: true,
                             constantSpeed: 8,
-                            trailWidth: 1,
+                            trailWidth: 1.5,
                             trailLength: 0.3,
                             // trailColor: [1, 1, 5],
                             trailOpacity: 1,
