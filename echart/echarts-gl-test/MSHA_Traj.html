@@ -28,7 +28,7 @@ permalink: /MSHA_Traj.html
 
             chart.showLoading();
 
-           $.getJSON('echart/echarts-gl-test/data/Q12017V1.json',function (data) {
+           $.getJSON('echart/echarts-gl-test/data/Q12017.json',function (data) {
                 chart.hideLoading();
 
                 var trajectory = data.map(function (busLine, idx) {
