@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track Human Movement from Twitter Data</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+    <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="http://cdn.bootcss.com/leaflet/0.7.7/leaflet.js"></script>
+<script src="../src/leaflet-echarts.js"></script>
+<script src="../lib/echarts.source.js"></script>
+<script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    var map = L.map('map');
+    var baseLayers = {
+        'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+}),
+
+        'OSM': L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}),
+
+    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: 'abcd',
+    minZoom: 0,
+    maxZoom: 18,
+    ext: 'png'
+}),
+        'GeoQ': L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map)
+    };
+
+    var layercontrol = L.control.layers(baseLayers, {
+        position: "bottomleft"
+    }).addTo(map);
+
+
+    var stateCoordMap= { "Chester":[-76.27955,38.97229],"Frederick": [-77.41867, 39.42634], "Bowie": [-76.73837, 38.95369], "Solomons": [-76.46109, 38.33725], "Kettering": [-76.78895, 38.88884], "Temple Hills": [-76.9495, 38.81059], "Martin's Additions": [-77.06925, 38.97954], "Mount Rainier": [-76.96446, 38.94264], "Brooklyn Park": [-76.61739, 39.21701], "Mays Chapel": [-76.65156, 39.43427], "Rosedale": [-76.50843, 39.32657], "Point of Rocks": [-77.52918, 39.27806], "Edgewater": [-76.55723, 38.93725], "Leisure World": [-77.06906, 39.10229], "Kensington": [-77.07375, 39.02649], "North Laurel": [-76.8476, 39.12857], "Lansdowne": [-76.65665, 39.24239], "Fulton": [-76.91632, 39.1516], "Woodmore": [-76.78098, 38.92218], "Forest Glen": [-77.04512, 39.01786], "Galesville": [-76.55138, 38.83786], "College Park": [-76.93725, 38.98477], "Hyattsville": [-76.95478, 38.96115], "Baltimore": [-76.61444, 39.30508], "Taneytown": [-77.16856, 39.65597], "Sykesville": [-76.9725, 39.36982], "District Heights": [-76.88863, 38.85886], "Berwyn Heights": [-76.91306, 38.993], "Morningside": [-76.88944, 38.82658], "Cheverly": [-76.91417, 38.92533], "Capitol Heights": [-76.90745, 38.87654], "Chevy Chase View": [-77.08097, 39.01924], "Savage": [-76.82276, 39.14854], "Friendship": [-76.58782, 38.73587], "Edgewood": [-76.29678, 39.42096], "Owings Mills": [-76.79132, 39.4115], "Redland": [-77.14656, 39.13351], "Potomac": [-77.19429, 39.0141], "Ballenger Creek": [-77.42056, 39.38074], "Four Corners": [-77.01022, 39.02352], "Springdale": [-76.84227, 38.9383], "Glassmanor": [-76.9836, 38.81813], "Essex": [-76.44579, 39.30245], "Chillum": [-76.97883, 38.96674], "Severn": [-76.69405, 39.13564], "Lake Arbor": [-76.82986, 38.90696], "Cedarville": [-76.81904, 38.66227], "Friendship Heights Village": [-77.08996, 38.96329], "Jessup": [-76.77446, 39.14567], "Mayo": [-76.51797, 38.90415], "Westphalia": [-76.82316, 38.83847], "Woodlawn": [-76.90001, 38.95051], "Layhill": [-77.04005, 39.08699], "Chevy Chase": [-77.08331, 38.98187], "Shady Side": [-76.52074, 38.8285], "East Riverdale": [-76.91133, 38.96172], "Ashton-Sandy Spring": [-77.00653, 39.15148], "Waldorf": [-76.91946, 38.60853], "Timonium": [-76.60835, 39.44627], "Milford Mill": [-76.76684, 39.34437], "Olney": [-77.0715, 39.14657], "Crofton": [-76.68002, 39.01443], "Cloverly": [-77.01891, 39.10707], "Langley Park": [-76.9808, 38.98975], "Largo": [-76.82893, 38.87999], "Rosaryville": [-76.82662, 38.7672], "South Laurel": [-76.84557, 39.06028], "Suitland": [-76.9225, 38.8492], "Brookmont": [-77.12923, 38.95457], "Edgemere": [-76.47527, 39.2329], "Silver Spring": [-77.02071, 39.0028], "Melwood": [-76.84199, 38.80206], "Adelphi": [-76.96078, 38.98993], "Brandywine": [-76.88458, 38.69635], "Camp Springs": [-76.91984, 38.80524], "Forestville": [-76.87078, 38.85177], "Middle River": [-76.43185, 39.33453], "South Kensington": [-77.06787, 39.01701], "Severna Park": [-76.5687, 39.08701], "Owings": [-76.60555, 38.71172], "Wheaton": [-77.04489, 39.03981], "Clinton": [-76.90637, 38.74989], "Bel Air South": [-76.31973, 39.50506], "Elkridge": [-76.74273, 39.19415], "Golden Beach": [-76.7019, 38.49], "Fairland": [-76.95236, 39.08966], "Walker Mill": [-76.88623, 38.87538], "Laurel": [-76.86185, 39.09505], "Aspen Hill": [-77.10256, 39.09153], "White Oak": [-76.98679, 39.04596], "North Bethesda": [-77.11909, 39.03928], "Herald Harbor": [-76.57448, 39.05162], "Manchester": [-76.88807, 39.65835], "Garrison": [-76.75151, 39.39865], "Bladensburg": [-76.92648, 38.9423], "Colmar Manor": [-76.94397, 38.9305], "Edmonston": [-76.93228, 38.94785], "Forest Heights": [-76.99952, 38.81052], "Greenbelt": [-76.88848, 38.99535], "Gaithersburg": [-77.23235, 39.13032], "Poolesville": [-77.41019, 39.14231], "Rockville": [-77.15401, 39.07859], "Takoma Park": [-77.00279, 38.98103], "Annapolis": [-76.50478, 38.9705], "Arbutus": [-76.69218, 39.24282], "Naval Academy": [-76.48789, 38.98783], "Pasadena": [-76.5376, 39.13469], "Riva": [-76.58759, 38.94487], "Riviera Beach": [-76.54722, 39.16676], "Joppatowne": [-76.35165, 39.41814], "Germantown": [-77.26431, 39.17548], "Travilah": [-77.2458, 39.05711], "Aberdeen Proving Ground": [-76.13083, 39.46727], "National Harbor": [-77.01062, 38.78835], "Seabrook": [-76.8499, 38.98019], "Konterra": [-76.90211, 39.07755], "Brock Hall": [-76.75486, 38.86174], "Marlboro Meadows": [-76.71438, 38.83739], "Queen Anne": [-76.69731, 38.90205], "Fairwood": [-76.77762, 38.95631], "Perry Hall": [-76.4781, 39.40672], "Pikesville": [-76.70198, 39.38927], "Rossville": [-76.47268, 39.35238], "White Marsh": [-76.45737, 39.38192], "Arden on the Severn": [-76.59403, 39.06919], "Arnold": [-76.49736, 39.04367], "Cape St. Claire": [-76.44712, 39.04335], "Deale": [-76.54688, 38.79098], "Ferndale": [-76.633, 39.18692], "Fort Meade": [-76.746, 39.1096], "Glen Burnie": [-76.60722, 39.15592], "Lake Shore": [-76.48758, 39.10295], "Linthicum": [-76.66254, 39.20876], "Catonsville": [-76.74239, 39.26461], "Dundalk": [-76.49417, 39.27033], "Kingsville": [-76.42043, 39.44957], "Overlea": [-76.51758, 39.36423], "Lanham": [-76.84212, 38.96206], "Oxon Hill": [-76.97329, 38.78873], "Annapolis Neck": [-76.50267, 38.93327], "Gambrills": [-76.65116, 39.09286], "Ilchester": [-76.76848, 39.2187], "Landover Hills": [-76.8914, 38.94316], "Ellicott City": [-76.8344, 39.27732], "Linganore": [-77.30257, 39.41106], "Landover": [-76.8875, 38.9241], "Glenn Dale": [-76.80402, 38.98328], "La Plata": [-76.96951, 38.53555], "Chesapeake Ranch Estates": [-76.41469, 38.3574], "Clarksburg": [-77.26167, 39.23138], "Randallstown": [-76.80244, 39.37227], "Fort Washington": [-77.00695, 38.73392], "Accokeek": [-77.0023, 38.6745], "Hillandale": [-76.97514, 39.02542], "Marlboro Village": [-76.77198, 38.82568], "North Potomac": [-77.23727, 39.09556], "Calverton": [-76.94895, 39.06277], "Reisterstown": [-76.81439, 39.45514], "Scaggsville": [-76.88428, 39.14159], "Maryland City": [-76.80503, 39.10737], "Queensland": [-76.78385, 38.80209], "Cockeysville": [-76.62996, 39.47931], "Westminster": [-77.02528, 39.5763], "Beltsville": [-76.92113, 39.03953], "Baltimore Highlands": [-76.63675, 39.23545], "Summerfield": [-76.86781, 38.90423], "Eldersburg": [-76.9463, 39.40444], "Crownsville": [-76.5903, 39.02246], "Lochearn": [-76.73067, 39.34605], "Towson": [-76.619, 39.39437], "Bel Air": [-76.3465, 39.53448], "California": [-76.49495, 38.29687], "Hillcrest Heights": [-76.96408, 38.83732], "Cabin John": [-77.16348, 38.97427], "Mitchellville": [-76.81456, 38.93579], "Andrews AFB": [-76.87439, 38.80533], "Marlton": [-76.78571, 38.76198], "Odenton": [-76.69386, 39.0661], "Burtonsville": [-76.93558, 39.11659], "Drum Point": [-76.43092, 38.32771], "Parkville": [-76.55189, 39.38321], "Thurmont": [-77.40834, 39.62253], "Damascus": [-77.20058, 39.27372], "Glenarden": [-76.85003, 38.92758], "Columbia": [-76.85902, 39.20043], "Croom": [-76.76081, 38.73433], "Parole": [-76.55188, 38.98613], "Bethesda": [-77.11877, 38.98656], "Mount Airy": [-77.15344, 39.37426]};
+
+  var interaction_2013=[[{'name': 'Bowie'}, {'name': 'Chester', 'value': 0.03}], [{'name': 'Edgewater'}, {'name': 'Chester', 'value': 0.02}], [{'name': 'College Park'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Baltimore'}, {'name': 'Chester', 'value': 0.07}], [{'name': 'Potomac'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Severn'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Jessup'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Westphalia'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Milford Mill'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Crofton'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Silver Spring'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Severna Park'}, {'name': 'Chester', 'value': 0.04}], [{'name': 'Elkridge'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'North Bethesda'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Rockville'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Annapolis'}, {'name': 'Chester', 'value': 0.06}], [{'name': 'Arbutus'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Pasadena'}, {'name': 'Chester', 'value': 0.02}], [{'name': 'Brock Hall'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Arnold'}, {'name': 'Chester', 'value': 0.06}], [{'name': 'Cape St. Claire'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Ferndale'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Glen Burnie'}, {'name': 'Chester', 'value': 0.03}], [{'name': 'Linthicum'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Lanham'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Annapolis Neck'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Gambrills'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Ellicott City'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Landover'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Maryland City'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Beltsville'}, {'name': 'Chester', 'value': 0.02}], [{'name': 'Mitchellville'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Marlton'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Odenton'}, {'name': 'Chester', 'value': 0.03}], [{'name': 'Columbia'}, {'name': 'Chester', 'value': 0.01}], [{'name': 'Parole'}, {'name': 'Chester', 'value': 0.2}], [{'name': 'Bethesda'}, {'name': 'Chester', 'value': 0.01}]];
+  var point_2013_Top10=[
+  {'name': 'Parole', 'value': 0.2},
+ {'name': 'Baltimore', 'value': 0.07},
+ {'name': 'Annapolis', 'value': 0.06},
+ {'name': 'Arnold', 'value': 0.06},
+ {'name': 'Severna Park', 'value': 0.04},
+ {'name': 'Bowie', 'value': 0.03},
+ {'name': 'Glen Burnie', 'value': 0.03},
+ {'name': 'Odenton', 'value': 0.03},
+ {'name': 'Edgewater', 'value': 0.02},
+ {'name': 'Pasadena', 'value': 0.02},
+ {'name': 'Beltsville', 'value': 0.02}];
+
+
+
+
+    map.setView(L.latLng(38.97229,-76.26955), 10);
+
+    var overlay = new L.echartsLayer(map, echarts);
+    var chartsContainer=overlay.getEchartsContainer();
+    var myChart=overlay.initECharts(chartsContainer);
+    window.onresize = myChart.onresize;
+
+
+    var option = {
+    color: ['darkgreen'],
+    title : {
+        text: 'Vehicles Driving through Bay Bridge Maryland',
+        subtext:'CGIS Center, UMD',
+        x:'center',
+        textStyle : {
+            color: '#fff'
+        }
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: '{b}'
+    },
+    legend: {
+        orient: 'vertical',
+        x:'left',
+        y:'center',
+        data:['BayBridgeTravel'],
+        // selectedMode: 'single',
+        // selected:{
+        //     'CO2014 Top15' : false,
+        //     'CO2015 Top15' : false,
+        //     'CO2016 Top15' : false,
+        //     'CO2017 Top15' : false
+           
+        // },
+        textStyle : {
+            color: 'gold'
+        }
+    },
+    // toolbox: {
+    //     show : true,
+    //     orient : 'vertical',
+    //     x: 'right',
+    //     y: 'center',
+    //     feature : {
+    //         mark : {show: true},
+    //         dataView : {show: true, readOnly: false},
+    //         restore : {show: true},
+    //         saveAsImage : {show: true}
+    //     }
+    // },
+    // dataRange: {
+    //     min : 0,
+    //     max : 100,
+    //     calculable : true,
+    //     color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+    //     textStyle:{
+    //         color:'#fff'
+    //     }
+    // },
+    series : [
+        {
+            name: 'National',
+            type: 'map',
+            roam: true,
+            hoverable: false,
+            mapType: 'none',
+            itemStyle:{
+                normal:{
+                    borderColor:'rgba(100,149,237,1)',
+                    borderWidth:0.5,
+                    areaStyle:{
+                        color: '#1b1b1b'
+                    }
+                }
+            },
+            data:[],
+            markLine : {
+                smooth:true,
+                symbol: ['none', 'circle'],  
+                symbolSize : 1,
+                itemStyle : {
+                    normal: {
+                        color:'#fff',
+                        borderWidth:1,
+                        borderColor:'rgba(30,144,255,0.5)'
+                    }
+                },
+                data : [],
+     
+            },
+            geoCoord:  stateCoordMap
+        
+        },
+        
+        {
+            name: 'BayBridgeTravel',
+            type: 'map',
+            mapType: 'none',
+            data:[],
+            markLine : {
+                smooth:true,
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 30,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                        borderWidth:1,
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : interaction_2013
+               
+            },
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    return 10 + v/10
+                    //return v
+                },
+                effect : {
+                    show: true,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{show:true}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : point_2013_Top10
+            }
+        }
+
+        
+
+    ]
+};                   
+overlay.setOption(option);
+</script>
+</body>
+</html>
