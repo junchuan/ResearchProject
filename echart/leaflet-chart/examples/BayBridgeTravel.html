@@ -21,6 +21,7 @@
 <script>
     var map = L.map('map');
     var baseLayers = {
+
         'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 }),
@@ -30,14 +31,16 @@
 //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 // }),
 
-    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+
+        'GeoQ': L.tileLayer('https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'),
+
+                    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
     attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     subdomains: 'abcd',
     minZoom: 0,
     maxZoom: 18,
     ext: 'png'
-}),
-        'GeoQ': L.tileLayer('https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map)
+}).addTo(map)
     };
 
     var layercontrol = L.control.layers(baseLayers, {
@@ -64,7 +67,7 @@
 
 
 
-    map.setView(L.latLng(38.97229,-76.26955), 10);
+    map.setView(L.latLng(38.97229,-76.49955), 10);
 
     var overlay = new L.echartsLayer(map, echarts);
     var chartsContainer=overlay.getEchartsContainer();
@@ -213,5 +216,6 @@
 };                   
 overlay.setOption(option);
 </script>
+
 </body>
 </html>
