@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Understanding spatial interactions through estimated VMT using GPS tracks </title>
+
+		<meta name="description" content="Slide Test">
+		<meta name="author" content="Junchuan Fan">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+<style>
+
+
+</style>
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+<!--Title-->
+<section>
+	<h2>Understanding spatial interactions through estimated VMT using Big GPS trajectory Data</h2>
+<p>
+	 <a href="#"> Junchuan Fan, </a><a href="#"> Cheng Fu,</a> <a href="#"> Kathleen Stewart </a>
+</p>
+<p>
+	 <a href="#"> Center for Geospatial Information Science, University of Maryland </a>
+</p>
+
+
+<div class='w3-container w3-center'>
+	<a href="https://geospatial.umd.edu/"><img style=" border:None" data-src="media/mti_CGIS_logo.png" alt="Center for Geospatial Information Science"></a>
+</div>
+
+</section>
+
+<!--Outline-->	
+
+<section style="text-align: left">
+	<div class="w3-panel w3-border-0">
+	
+	<h3><a href="#/1">Outline</a></h3>
+	</div>	
+
+	
+  	<div class="w3-col s6">
+
+  	<ul >
+
+  	  	<li >Introduction and Motivation </li>
+  		<li >Data</li>
+  		<ul>
+  			<li>GPS trajectory data from INRIX and HERE road network data</li>
+  			<li>Challenges in dealing with big irregularly-sampled GPS waypoints</li>
+  		</ul>
+
+  
+  		<li>Understanding Travel Activity Behavior from big GPS trajectory data</li>
+  		  <ul>
+  			<li>By space and by time</li>
+  			<li>By types of driving trajectory</li>
+  		</ul>
+
+  		<li>Big GPS trajectory reconstruction using Apache Spark  </li>
+
+  		<li >VMT Estimation Result</li>
+
+  		<li >What’s Next?</li>
+
+  	</ul>
+  </div>
+ <div class="w3-col s6 ">
+ 	<a href="https://smart-spatial.com/ResearchProject/July4_Traj.html"><img class='w3-round-xlarge' style="height:700px ;border:none" data-src="media/aag-traj.png" alt="maryland trajectories"></a>
+</div>
+  
+
+
+
+</section>
+
+<!-- VMT explaination-->
+<section>
+<section style="text-align: left">
+	<div class="w3-panel w3-border-0">
+	<h3><a href="#/2/1">Estimating Vehicle Miles Traveled (VMT) </a></h3>
+	</div>
+  	
+  	<div class='fragment w3-container w3-padding-16'>
+  		<li><strong>Vehicle Miles Traveled (VMT)</strong> refers to the total miles that vehicles travel on roadways</li>
+ 	</div>
+
+  	<div class='fragment w3-container w3-padding-16'>
+  		<li>The magnitude of VMT varies based on a road’s lane-length and its <em>functional classification</em></li>
+ 	</div>
+  	
+  	<div class='fragment w3-container w3-padding-16'>
+  		  	<li>States are required to report aggregated annual VMT estimates for the various functional classification of roads to the Federal Highway Administration (FHWA). However, there is no standard that enforces the use of a particular method, thus VMT for  different classes of  roads is not being estimated in a consistent manner across all states.</li>
+
+ 	</div>
+  
+</section>
+<section style="text-align: left">
+	<div class="w3-panel w3-border-0">
+	<h3><a href="#/2/2">A little more on bias</a></h3>
+	</div>
+
+	 <div class='w3-container w3-padding-16'>
+	 	<ul>
+  		<li>Most states do not randomly select traffic count sampling locations, which can create biases when limited traffic count data are extrapolated to estimate statewide VMT rates. </li>
+  		<ul>
+  			<li>For example, traffic count data collection may be selected based on where road improvement projects, land development projects, and traffic problems are located. </li>
+  			<li>Or a state may only undertake traffic counts on the “most important” roads for traffic count monitoring. </li>
+  			<li>For local roads,  roads may  not be sampled if they have on average traffic less than 50 vehicles per day.</li>
+  		</ul>
+  	</ul>
+ 	</div>
+
+ 	  	<div class='w3-container w3-padding-16'>
+  		  	<li>While these practical sampling methods favor the more important roads, their non-random sampling procedures can produce significant biases especially in local road VMT estimates at the state level.</li>
+
+ 	</div>
+
+	
+</section>
+
+</section>
+
+<!--Modeling with GPS trajectory-->
+<section style="text-align: left">
+	<div class="w3-panel w3-border-0">
+	<h3><a href="#/3">Modeling with GPS Trajectories </a></h3>
+	</div>
+	  <div class='fragment w3-container w3-padding-16'>
+  		 <li>GPS trajectory data allows researchers to study <strong>individual driving behaviors</strong> as well as <strong>collective traffic patterns</strong>  
+</li>
+
+ 	</div>
+
+ 		<div class='fragment w3-container w3-padding-16'>
+  		 <li>Estimation of  Vehicle Miles Travelled (VMT) is an important task for the <strong>Federal Highway Administration (FHWA)</strong>  as well as many state transportation agencies 
+</li>
+
+ 	</div>
+
+ 	 	<div class='fragment w3-container w3-padding-16'>
+  		 <li>Using <strong>big GPS trajectories datasets  to estimate VMT</strong> can offer a possible solution
+ 
+</li>
+
+ 	</div>
+
+</section>
+
+
+<!-- big geospatial data -->
+<section>
+	<section>
+	<h2><a href="#/4">Big Geospatial Data</a></h2>
+</section>
+
+<!--GPS trajectory data-->
+<section style="text-align: left">
+	<h3><a href="#/4/1">GPS Trajectories Data</a></h3>
+	<div class="w3-col s6">
+		
+
+  	<img style="width:100%" data-src="media/mti_vmt_vertical1.png" alt="GPS trajectories example">
+
+	</div>	
+	<div class="w3-col s6  w3-padding-8 ">
+		<a href="#/4/1">INRIX trajectory data</a>
+<li>Collected using GPS trackers (embedded GPS)and mobile devices (using an app).</li>
+<li>GPS waypoionts from different trips can have different sampling intervals .</li>
+<p></p>
+		<a href="#/4/1">Four months of  data from 2015</a>
+<li>February  (3,565,361 trips, 398,652,043 waypoints)</li>
+<li>June  (4,835,882 trips, 152,604,037 waypoints)</li>
+<li>July  (4,868,583 trips, 100,246,683 waypoints)</li>
+<li>October  (6,420,576 trips, 725,217,440 waypoints)</li>
+
+	</div>	
+</section>
+<!-- HERE road network -->
+<section style="text-align: left">
+		<h3><a href="#/4/2">HERE Road Network</a></h3>
+	<div class="w3-col s6">
+		
+
+  	<img style="width:100%" data-src="media/aag-network.png" alt="GPS trajectories example">
+
+	</div>	
+	<div class="w3-col s6  w3-padding-8 ">
+		<a href="#/4/2">For this research we are using the HERE road network
+maintained by HERE. </a>
+<li>A turn-by-turn navigation road network .</li>
+<li>Lanes in each direction are represented as a single line.</li>
+
+<li>The HERE network for Maryland is comprised of 445,151 road segments.</li>
+
+
+	</div>	
+
+</section>
+
+
+<!-- Challenge of big GPS trajectory data -->
+<section style="text-align: left">
+	<h3><a href="#/4/3">Dealing big GPS trajectory data that are irregularly-sampled... </a></h3>
+
+	<div class="w3-container  w3-padding-8 ">
+
+<li><strong>Hundreds of millions of GPS waypoints</strong> have to be matched back to the underlying road network in order to estimate VMT on different segments of the road network
+ </li>
+ <li>Working with these big geospatial trajectories and the road networks means that we have a computing task that is both <strong>CPU intensive</strong> (processing the GPS data, generate shortest path)  and <strong>memory intensive</strong> (storing the road network data)
+</li>
+<li> <strong>Irregular GPS sampling intervals</strong> for vehicles travelling on the road network derived perhaps from the fixed sampling intervals that can vary between devices
+</li>
+
+	</div>	
+
+	<div class="w3-container w3-center">
+		
+
+  	<img style="width:75%;border:none" data-src="media/aag-gps-sample.png" alt="GPS trajectories example">
+
+	</div>		
+
+</section>
+
+</section>
+
+
+
+<!-- understand travel activity behavior -->
+<section>
+<h3><a href="#/6">Understanding Travel Activity Behavior from big GPS trajectory data </a></h3>
+	
+</section>
+
+<section style='text-align: left'>
+	<h3><a href="#/7">Geovisual analytics of big GPS trajectory data </a></h3>
+	
+
+	<div class="w3-col s7">
+		<img  style="border:none" data-src="media/aag-july-traj-heat.png" alt="july traj heatmap">
+<p class="w3-large" >*July 2015 dataset has 4.8 million vehicle trajectories with over 100 million GPS waypoints . </p>
+	</div>
+
+	<div class="w3-col s5  ">
+<h4><a href="#/7">Developed parallel algorithm to visualize billions of GPS waypoints</a></h3>
+
+<li>Transformation: transform latitude, longitude coordinates into projected coordinates in a plane</li>
+ 
+ <li> Division: Divide the plane into a grid of desired dimension (e.g., 960*800)
+ 	
+</li>
+<li>Aggregation: Aggregate the GPS waypoints into different cells in the grid and generate a heatmap based on the count of waypoints in each cell</li>
+
+
+
+</section>
+
+
+
+
+<!-- Different types of trajectories -->
+<section style='text-align: left'>
+
+	<h3><a href="#/8">Different types of vehicle trajectories </a></h3>
+	
+
+	<div class="w3-col s7">
+		<img  style="border:none" data-src="media/aag-traj-type.png" alt="july traj type">
+		<img  style="border:none" data-src="media/aag-trajtype-legend.png" alt="july traj type">
+
+	</div>
+
+	<div class="w3-col s5 ">
+
+<ul>
+<li>INRIX data categorizes vehicle GPS trajectories into four types based on driving profile:</li>
+<ul>
+	<li>Consumer/passenger cars </li>
+	<li>Taxi/shuttle </li>
+	<li>Local delivery fleets </li>
+	<li>For Hire/Private Trucking Fleets </li>
+</ul>
+</ul>
+ <li>The color of a pixel reflects the majority type of vehicles driving on a road</li>
+
+	
+</section>
+
+<!--  Different types of trajectories in Baltimore area -->
+<section style='text-align: left'>
+	<div class="w3-col s4">
+	<li>The roads with predominantly passenger cars and taxi/shuttle vehicles reveal interesting mobility patterns in Baltimore-DC area</li>
+	</div>
+	<div class="w3-col s8">
+		<img  style="border:none" data-src="media/aag-traj-type-bt.png" alt="july traj type">
+		
+	</div>
+
+	
+</section>
+
+
+
+<!--road network usage of different types of vehicles-->
+<section>
+<div class="w3-container">
+  <h3><a href="#/9">Extract road network usage patterns for different types of vehicles </a></h3>
+</div>
+
+  <div class="w3-half">
+    <div class="w3-card">
+      <img data-src="media/mti_passenger_traj.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Passenger Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-half">
+    <div class="w3-card">
+      <img data-src="media/mti_truck_traj.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Truck Fleet Trajectories</p>
+      </div>
+    </div>
+  </div>
+	
+	<span class="w3-medium" >* INRIX data (July 2015), 4.8 million vehicle trajectories </span>
+
+	</section>	
+
+
+
+
+
+
+<!--morning commute origin destination-->
+<section style='text-align: left'>
+<div class="w3-container">
+  <h3><a href="#/10">Weekday morning commute </a></h3>
+  <li>From the massive number of vehicle trajectories, we can study the spatial patterns of origins and destinations of vehicle trajectories in the morning (5:00am-9:00am)
+</li>
+</div>
+
+  <div class="w3-half w3-center">
+    <div class="w3-card">
+      <img data-src="media/aag-morning-origin.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Origin of Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-half w3-center">
+    <div class="w3-card">
+      <img data-src="media/aag-morning-dest.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Destination of Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+	
+	
+</section>
+
+<!--morning commute origin destination -Beltway-->
+<section style='text-align: left'>
+<div class="w3-container">
+  <h3><a href="#/11">Weekday morning commute inside beltway</a></h3>
+  <li>Geovisualization of massive vehilce trajectories reveals the regions from which people start and end their morning commute. 
+</li>
+</div>
+
+  <div class="w3-half w3-center">
+    <div class="w3-card">
+      <img data-src="media/aag-morning-origin-dc.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Origin of Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-half w3-center">
+    <div class="w3-card">
+      <img data-src="media/aag-morning-dest-dc.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Destination of Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+	
+	
+</section>	
+
+
+
+
+
+<!--Spatial interaction visualization-->
+<section>
+<div class="w3-container">
+  <h3><a href="#/12">Model human movement patterns for specific geographic locations or regions</a></h3>
+</div>
+   <div class="w3-half">
+  	 <iframe style="width:100%; height:700px"  data-src="https://smart-spatial.com/
+ResearchProject/BayBridge_Traj.html" > </iframe>
+  	</div>
+
+  	<div class="w3-half">
+  	  <iframe style="width:100%; height:700px"  data-src="https://smart-spatial.com/ResearchProject/echart/leaflet-chart/examples/BayBridgeTravel.html" > </iframe>
+  	</div>
+
+</section>
+
+
+
+<!-- big geospatial data processing framework -->
+
+<section >
+	<section>
+		<h3><a href="#/13">Big GPS trajectory reconstruction using Apache Spark</a></h3>
+	</section>
+
+<!-- apache spark -->
+<section style="text-align: left">
+	<div class='w3-cell-row'>
+	<div class="w3-container w3-cell-middle w3-cell ">
+	<h3><a href="#/13/1">Apache Spark Framework </a></h3>
+	</div>
+	<div class='w3-cell-middle w3-cell'>
+
+	<img style="border:none" data-src="media/aag-spark-logo.png" alt="spark logo">
+	</div>	
+</div>
+
+
+<div class="w3-container  w3-padding-8 ">
+
+<li>Apache Spark is an open-source cluster-computing framework currently maintained by the Apache Foundation</li>
+ <li>The core of Spark is the <strong>resilient distributed dataset (RDD)</strong> that extends the original MapReduce paradigm (implemented as Hadoop) allowing repeated data queries on the RDDs that are stored in distributed shared memory. </li>
+<li> It allows users to  interact using Java, Python, R, etc., and receives customized <strong>user-defined functions (UDF) </strong> from these programming languages. 
+	<li>Much faster than the Hadoop framework</li>
+</li>
+
+	</div>	
+
+
+</section>
+
+<!-- Trajectory reconstruction process -->
+<section>
+		<div class="w3-panel w3-border-bottom">
+	<h3><a href="#/13/2">Vehicle Trajectory Reconstruction Process </a></h3>
+	</div>	
+	  <div class="w3-third">
+    <div class="w3-card">
+      <img data-src="media/aag-inrix-wp.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>INRIX waypoints</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-third">
+    <div class="w3-card">
+      <img data-src="media/aag-here-match.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Match HERE segments with gaps</p>
+      </div>
+    </div>
+  </div>
+
+    <div class="w3-third">
+    <div class="w3-card">
+      <img data-src="media/aag-traj-recon.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Reconstructed trajectories</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- Trajectory reconstruction algorithm -->
+<section style='text-align: left'>
+
+	<h3><a href="#/13/3">Trajectory reconstruction algorithm </a></h3>
+
+	<div class="w3-col s8 w3-padding-8 ">
+<h4><a href="#/13/3">Snap way-points of an INRIX trip to HERE road segments</a></h3>
+
+<li>Find the K nearest neighbors (k=10, and distance within 100 meters) as the candidates.
+ </li>
+ <li>Select the candidate with largest cosine. 
+</li>
+<p></p>
+
+<h4><a href="#/5/3">Fill segment gaps by heuristic algorithms</a></h3>
+<li> Due to large time interval between two waypoints (1~2mins or longer), intermediate segments may be missing. 
+Road network topology is employed to help fill the gap.
+</li>
+<li>Dijkstra’s algorithm for finding the shortest path is used to fill the gaps between two segments.</li>
+<li><em>Assumption: drivers always take the shortest path between the two recorded waypoints </em></li>
+
+	</div>	
+	<div class="w3-col s4 w3-center ">
+		<img  style="border:none" data-src="media/aag_snappnt2.png" alt="snap point">
+		<img  style="border:none" data-src="media/aag_snappnt1.png" alt="snap point">
+		
+
+	</div>
+
+</section>
+
+
+
+<!-- apply spark -->
+
+<section style='text-align: left'>
+
+	<h3><a href="#/13/4"> Using Spark Framework for trajectory reconstruction </a></h3>
+
+		<div class="w3-col s7 w3-center ">
+		<img  style="border:none" data-src="media/aag-spark-framework.png" alt="snap point">
+
+	</div>
+
+	<div class="w3-col s5  ">
+<h4><a href="#/13/4">Snap way-points of an INRIX trip to HERE road segments</a></h3>
+
+<li>“WayPoints” blocks are split into subsets from the original data set.</li>
+ <li>HERE road network is copied to each pipeline as <strong>broadcast variable</strong> (memory intensive).
+</li>
+<li>Spatial computing is done by a Python UDF on Spark.</li>
+<p></p>
+
+
+</section>
+
+</section>	
+
+<!-- VME estimation result -->
+<section style='text-align: left'>
+
+	<div class="w3-col s5">
+<h4><a href="#/14">VMT Estimation Results</a></h4>
+
+<li>After reconstructing millions of trajectories for each month, each vehicle trajectory is transformed into a road segment sequence. 
+ </li>
+ <li>Based on the properties of each road segment, we can summarize VMT for different classes of roads. </li>
+<li>The  VMT estimates calculated by our methods are very similar for roads of different function classes for June and July .
+</li>
+</div>
+	 <div class="w3-col s7 ">
+  
+  	 <iframe style="width:100%; height:800px;"  data-src="media/mti_vmt_result.html" > </iframe>
+  	</div>
+	 
+	
+</section>
+
+
+
+
+
+<!--Limits-->
+<section style="text-align: left">
+
+	<div>
+<h3><a href="#/15">This is all very interesting but we must note some limitations...</a></h3>
+
+<li>Uncertainties associated with the GPS coordinates derived from different devices  are unknown. </li>
+
+ <li>There appears to be some bias in representing certain vehicle types. </li>
+<li>There may be multiple trips by the same vehicles that is not yet accounted for .</li>
+</div>
+
+
+</section>
+
+
+<!-- future work -->
+								
+<section style="text-align: left">
+
+	<div>
+<h3><a href="#/16">Future work</a></h3>
+
+ 	<div class='fragment w3-container w3-padding-16'>
+  		<li><strong>Calibrate our results</strong> with  vehicle counts calculated by FHWA/State Highway Administrations by weighting different types of vehicles (and possibly also by time).</li>
+ 	</div>
+
+ 	<div class='fragment w3-container w3-padding-16'>
+ <li><strong>Estimate uncertainty</strong> from sampling  on the accuracy of VMT estimation. </li>
+ 	</div>
+ 	 	<div class='fragment w3-container w3-padding-16'>
+<li>We are working on additional months for Maryland and want to apply the methodology to additional states.</li>
+ 	</div>
+ 	 	<div class='fragment w3-container w3-padding-16'>
+
+<li>Incorporate other measures such as land use attributes, population, employment density etc.</li>
+ 	</div>
+
+</div>
+
+</section>
+<!-- Question -->
+<section>
+	<h1><a href="#/">Questions?</a></h1>
+</section>
+
+
+
+
+
+
+</section>
+
+	
+</div>
+</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+
+				// width: 960,
+				// height: 700,
+				width: 1920,
+				height: 1080,
+				//width: "100%",
+				//height: "100%",
+				margin: 0.1,
+				minScale: 0.2,
+				maxScale: 3.5,
+				slideNumber: true,
+
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				viewDistance:3,
+				prevewLinks:true,
+				//autoSlide: 30000,
+				loop:true,
+
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// Transition style for full page slide backgrounds
+				backgroundTransition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
