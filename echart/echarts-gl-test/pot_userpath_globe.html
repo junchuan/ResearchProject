@@ -1,3 +1,7 @@
+---
+permalink: /POT_TwitterMovementPath.html
+---
+
 <!doctype html>
 <html>
     <head>
@@ -5,22 +9,22 @@
         <title>Human Movement to Path of Totality during Aug 21,2017 Solar Eclipse from Twitter Data</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Fullscreen Landscape on iOS -->
-        <link rel="stylesheet" href="./common.css">
+        <link rel="stylesheet" href="echart/echarts-gl-test/common.css">
     </head>
     <body>
         <div id="main"></div>
 
 
-        <script src="../echarts-js-4.2/echarts.js"></script>
+        <script src="echart/echarts-js-4.2/echarts.js"></script>
 
-        <script src="../echarts-js-4.2/echarts-gl.js"></script>
+        <script src="echart/echarts-js-4.2/echarts-gl.js"></script>
 
-        <script src="lib/jquery.min.js"></script>
-        <script src="js/commonUI.js"></script>
+        <script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
+        <script src="echart/echarts-gl-test/js/commonUI.js"></script>
         <script>
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('data/totalityuser_path.json', function (data) {
+            $.getJSON('echart/echarts-gl-test/data/totalityuser_path.json', function (data) {
                 // path element: [from_lat,from_lng,to_lat,to_lng]
                 
 
@@ -41,8 +45,8 @@
 
         backgroundColor: '#000',
         globe: {
-            baseTexture: 'asset/globe-base-texture.jpg',
-            heightTexture: 'asset/globe-highlight-texture.jpg',
+            baseTexture: 'echart/echarts-gl-test/asset/globe-base-texture.jpg',
+            heightTexture: 'echart/echarts-gl-test/asset/globe-highlight-texture.jpg',
 
             shading: 'lambert',
 
