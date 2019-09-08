@@ -9,17 +9,18 @@
     </head>
     <body>
         <div id="main"></div>
-        <script src="../node_modules/echarts/dist/echarts.js"></script>
-        <script src="../node_modules/echarts/map/js/china.js"></script>
-        <script src="../dist/echarts-gl.js"></script>
+        <script src="../echarts_js/echarts.js"></script>
+        <script src="../echarts_js/map/js/china.js"></script>
+        <script src="../echarts_js/echarts-gl.js"></script>
         <script src='lib/mapbox-gl.js'></script>
         <link href='lib/mapbox-gl.css' rel='stylesheet' />
         <script src="lib/jquery.min.js"></script>
         <script>
-            mapboxgl.accessToken = window.location.search.slice(1);
+            mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
+
             var chart = echarts.init(document.getElementById('main'));
 
-            $.getJSON('./data/alcohol.json', function (data) {
+            $.getJSON('data/alcohol.json', function (data) {
 
                 chart.setOption({
                     visualMap: {
