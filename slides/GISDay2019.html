@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>GIS Day 2019 </title>
+
+		<meta name="description" content="Slide Test">
+		<meta name="author" content="Junchuan Fan">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+<style>
+
+
+</style>
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+<!--Title-->
+<section>
+	<h2>Understanding Human Activity and Mobility from Big Data</h2>
+<p>
+	 <a href="#"> Center for Geospatial Information Science </a>
+</p>
+<p>
+	 <a href="#"> 1124 LeFrak Hall, University of Maryland </a>
+</p>
+
+<p>
+	<a href="#"> Junchuan Fan, Ph.D. </a>
+
+</p>
+	    <p>
+    		Email: jcfan@umd.edu
+    	</p>
+<div class='w3-container w3-center'>
+	<a href="https://geospatial.umd.edu/"><img style="width:20%;border:none" data-src="media/mti_CGIS_logo.png" alt="Center for Geospatial Information Science"></a>
+	<a href="https://mti.umd.edu/"><img style="width:12%;border:none" data-src="media/mti_logo.png" alt="Maryland Transportation Institute"></a>
+</div>
+
+</section>
+
+
+<!--VMT-->
+
+	<section>
+	<div class="w3-panel w3-border-bottom">
+	<h3><a href="#/2">Using big GPS trajectory data to estimate VMT for Maryland roads of different function classes</a></h3>
+	</div>	
+
+	<div class="w3-row">
+  	<div class="w3-col s6 ">
+  	 
+  	<div class='w3-card'>
+  	<img style="width:100%;border:none" data-src="media/mti_vmt_trajtype1.png" alt="different type of driving trajectories">
+<img style="width:100%;border:none" data-src="media/mti_vmt_trajtype_legend.png" alt="different type of driving trajectories">
+	</div>
+ 
+  	</div>
+  <div class="w3-col s6 ">
+  
+  	 <iframe style="width:100%; height:700px"  data-src="media/mti_vmt_result.html" > </iframe>
+  	</div>
+	 
+	  
+	</div>
+
+	</section>
+
+
+
+	
+
+
+<!--road network usage of different types of vehicles-->
+<section>
+<div class="w3-container">
+  <h3><a href="#/3">Extract road network usage patterns for different types of vehicles </a></h3>
+</div>
+
+  <div class="w3-half">
+    <div class="w3-card">
+      <img data-src="media/mti_passenger_traj.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Passenger Vehicle Trajectories</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-half">
+    <div class="w3-card">
+      <img data-src="media/mti_truck_traj.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <p>Truck Fleet Trajectories</p>
+      </div>
+    </div>
+  </div>
+	
+	<span class="w3-medium" >* INRIX data (July 2015), 4.8 million vehicle trajectories </span>
+
+	</section>	
+
+
+
+
+<!--July 4th trajectory visualization-->
+<section data-background-iframe="https://smart-spatial.com/ResearchProject/July4_Traj.html" data-background-interactive>
+	<div style="position: fixed;bottom: 0;right: 0">
+	
+<img style="width:40%" data-src="media/mti_CGIS_logo.png" alt="Center for Geospatial Information Science">
+	
+	</div>
+</section>
+
+
+
+
+<!--Spatial interaction visualization-->
+<section>
+<div class="w3-container">
+  <h3><a href="#/5">Model human movement patterns for specific geographic locations or regions</a></h3>
+</div>
+   <div class="w3-half">
+  	 <iframe style="width:100%; height:700px"  data-src="https://smart-spatial.com/ResearchProject/BayBridge_Traj.html" > </iframe>
+  	</div>
+
+  	<div class="w3-half">
+  <iframe style="width:100%; height:700px"  data-src="https://smart-spatial.com/ResearchProject/echart/leaflet-chart/examples/BayBridgeTravel.html" > </iframe>
+  	</div>
+
+</section>
+
+
+<!--Naturalistic driving behavior-->
+<section >
+<div class="w3-container">
+  <h3><a href="#/7">Extract driving behaviors from naturalistic driving trajectories</a></h3>
+
+</div>
+<div class='w3-center'>
+
+<img data-src="media/mti_nads.png" style="width:1258px; height:776px;border:none">
+</div>
+</section>
+
+
+<!-- truck parking behavior -->
+<section>
+	
+<div class="w3-container">
+  <h3><a href="#/8">Understanding truck parking behavior based on big vehicle GPS trajectory analytics</a></h3>
+</div>
+
+  <div class="w3-half w3-center">
+
+ 
+    	<img data-src="media/TRB_NETP18.PNG" style="width:70%;border:none">
+        
+        
+
+      	<img data-src="media/TRB_NETP18_TimeHeatmap.png" style="width:70%;border:none">
+
+        <p><span class="w3-xlarge" >Travel Center of America 18</span></p>
+
+  	</div>
+
+  <div class="w3-half w3-left">
+ 
+    	<img data-src="media/TRB_NETP22.PNG" style="width:70%;border:none">
+        
+        
+
+      	<img data-src="media/TRB_NETP22_TimeHeatmap.png" style="width:70%;border:none">
+      	<p><span class="w3-xlarge" >Travel Center of America 22</span></p>
+        
+  </div>
+
+			
+
+</section>
+
+
+<!--Spatial patterns of traffic accidents-->
+<section style="text-align: left">
+<div class="w3-container">
+  <h3><a href="#/6">Combine spatial analysis with natural language processing to retrieve spatial patterns relating to travel from geo-tagged tweets</a></h3>
+</div>
+
+  <div class="w3-half w3-center">
+      <img data-src="media/mti_traffic_twt.jpg" style="width:70%;border:none">
+      <div class="w3-container">
+        <img data-src="media/mti_traffic_wc.png" style="width:50%;border:none">
+      </div>
+  	</div>
+
+  <div class="w3-half w3-center">
+      <img data-src="media/mti_snow_twt.jpg" style="width:70%;border:none">
+      <div class="w3-container">
+        <img data-src="media/mti_snow_wc.png" style="width:50%;border:none">
+      </div>
+  	</div>
+
+			
+</section>
+
+
+
+<!--human movement dynamics-->
+
+<section >
+<div class="w3-container">
+  <h3><a href="#/8">Discovering human activity spaces from geo-tagged tweet histories</a></h3>
+
+</div>
+
+  <div class='w3-half'>
+    <div class="w3-card">
+      <img data-src="media/eclipsetweet_county_hotspot_V2.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <h6>Spatial hotspot of eclipse tweets</h6>
+      </div>
+    </div>
+  </div>
+
+    <div class='w3-half'>
+    <div class="w3-card">
+      <img data-src="media/GeoreferenceTwt_boundary.png" style="width:100%;border:none">
+      <div class="w3-container">
+        <h6>Variable scales of georeference information in tweets</h6>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section data-background-iframe="https://smart-spatial.com/ResearchProject/POT_TwitterMovement.html" data-background-interactive>
+	<div style="position: fixed;bottom: 0;right: 0">
+	
+	
+	</div>
+</section>
+
+
+
+								
+
+
+	
+</div>
+</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+
+				// width: 960,
+				// height: 700,
+				width: 1920,
+				height: 1080,
+				//width: "100%",
+				//height: "100%",
+				margin: 0.05,
+				minScale: 0.2,
+				maxScale: 3.5,
+				slideNumber: true,
+
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				viewDistance:3,
+				prevewLinks:true,
+				autoSlide: 15000,
+				loop:true,
+
+
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// Transition style for full page slide backgrounds
+				backgroundTransition: 'concave', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
