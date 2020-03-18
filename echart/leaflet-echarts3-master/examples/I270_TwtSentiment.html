@@ -49,6 +49,7 @@ permalink: /I270TwtSentiment.html
     var layercontrol = L.control.layers(baseLayers,{}, {
         position: "topleft"
     }).addTo(map);
+    
     map.setView(L.latLng(39.20,-77.28), 11);
     var overlay = new L.echartsLayer3(map, echarts);
     var chartsContainer = overlay.getEchartsContainer();
