@@ -123,8 +123,8 @@ permalink: /COVID_Count_US.html
 <div class="column side">
 
 <div class="column bottomside">
-<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 14405</h1> 
-<p class="infolist" margin-left=10px> last updated: 2020-03-20 11:00am EST</p> 
+<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 16498</h1> 
+<p class="infolist" margin-left=10px> last updated: 2020-03-20 2:00pm EST</p> 
 <h1 class="infotitle">Top 10 States:</h1>  
 <h2 id='state10' class="infolist"></h2>
 
@@ -314,7 +314,7 @@ option={
         orient:'vertical',
         left:'left',
         top: 'middle',
-        data: ['Raw Count', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
+        data: ['Raw Count (->hide me)', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
         textStyle: {
             color: '#FFC107',
             fontSize: 12
@@ -342,7 +342,7 @@ option={
     series : [
 
         {
-            name: 'Raw Count',
+            name: 'Raw Count (->hide me)',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
