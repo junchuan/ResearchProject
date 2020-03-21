@@ -1,12 +1,11 @@
----
-permalink: /COVID_Count_US.html
----
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>COVID-19 Case Monitoring for U.S. Counties</title>
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
+
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
     <style>
         html, body{
@@ -28,18 +27,6 @@ permalink: /COVID_Count_US.html
 
     tr:hover {background-color:#FFC107;}
 
-      a:link {
-    color: #FFC107;
-    text-decoration: underline;
-    
-  }
-     .note {
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-        color:#FFC107;
-        font-size: 0.8em;
-        padding: 10px;
-      }
-
         .infotitle {
         
         padding: 10px;
@@ -47,6 +34,18 @@ permalink: /COVID_Count_US.html
         color:#FFC107;
         font-size: 1.2em;
         font-family: Tahoma, Geneva, sans-serif;
+      }
+
+      a:link {
+    color: #FFC107;
+    text-decoration: underline;
+    
+  }
+      .note {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        color:#FFC107;
+        font-size: 0.8em;
+        padding: 10px;
       }
 
         .infolist {
@@ -84,6 +83,16 @@ permalink: /COVID_Count_US.html
         clear: both;
       }
 
+      .leaflet-bottom.leaflet-left{
+        width: 100%;
+      }
+      .leaflet-control-container .leaflet-timeline-controls{
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 15px;
+      }
+
 
 
         #map {
@@ -97,7 +106,7 @@ permalink: /COVID_Count_US.html
           border-radius: 10px;
           height: 50%;
           width: 100%;
-          background-color: #191A1A;
+          background-color: #343332;
 
         }
 
@@ -105,7 +114,7 @@ permalink: /COVID_Count_US.html
             border-radius: 10px;
        
           /*   width: 25%;*/
-          background-color: #191A1A;
+          background-color: #343332;
 
 
         }
@@ -114,7 +123,7 @@ permalink: /COVID_Count_US.html
           border-radius: 10px;
        
         
-          background-color: #191A1A;
+          background-color: #343332;
 
 
         }
@@ -128,8 +137,8 @@ permalink: /COVID_Count_US.html
 <div class="column side">
 
 <div class="column bottomside">
-<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 19762</h1> 
-<p class="infolist" margin-left=10px> last updated: 2020-03-21 10:00am EST</p> 
+<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 13656</h1> 
+<p class="infolist" margin-left=10px> last updated: 2020-03-19 09:00pm EST</p> 
 <h1 class="infotitle">Top 10 States:</h1>  
 <h2 id='state10' class="infolist"></h2>
 
@@ -138,23 +147,31 @@ permalink: /COVID_Count_US.html
 
 <div class="column bottomside">
   <h1 class="infotitle">Top 10 Counties:</h1>
-  <h2 id='county10' class="infolist"></h2>  
-
-    <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
+  <h2 id='county10' class="infolist"></h2> 
+  <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
   Data source: <a href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
-</p> 
+  </p> 
 
 </div>
 </div>
 
 <div id="map" class="column middle"></div>
 
+<!-- <div id="topcounty2" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div>
+<div id="topcounty3" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div>
+<div id="topcounty4" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div> -->
 
-
-<!-- <script src="../dist/main.min.js"></script> -->
-<!-- <script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script> -->
-<script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
-<script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
+<script src="../dist/main.min.js"></script>
+<script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script>
+<!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
+<script src="../libs/leaflet.timeline.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script>
     var map = L.map('map');
     var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
@@ -217,7 +234,7 @@ var convertData = function (twtdata) {
 
 
 
-$.getJSON('echart/asset/covid_county_cnt_0321_1000.json',function (data) {
+$.getJSON('covid_county_cnt_0320.json',function (data) {
 
   var statecnt_dict={}
   data.map(function(element,idx){
@@ -249,7 +266,6 @@ for (let i=0;i<10;i++){
 '<td>'+state10_items[i][1]+'</td></tr>'
 }
 state10_html=state10_html+"</table>"
-
    // console.log(state10_html);
 document.getElementById('state10').innerHTML=state10_html;
 
@@ -266,7 +282,6 @@ var county10_items=data.sort(function(first,second){
 //   county10_html=county10_html+'<p class="infolist">'+county10_items[i][2]+', '+county10_items[i][3]+" : "+'<span style="color:#46bee9">'+county10_items[i][4]+'</span>'+'</p>'
 // }
 
-
 county10_html="<table>";
 for (let i=0;i<10;i++){
   county10_html=county10_html+'<tr>'+'<td>' +county10_items[i][2]+', '+county10_items[i][3]+'</td>'+
@@ -274,19 +289,21 @@ for (let i=0;i<10;i++){
 }
 
 county10_html=county10_html+"</table>"
+
 // console.log(county10_html);
 document.getElementById('county10').innerHTML=county10_html;
 
 
 //find top 10 increase county
+
 var county10_inc_items=data.sort(function(first,second){
   return second[7]-first[7];
 }).slice(0,10);
 
 // console.log(county10_inc_items);
 
-
 //find top 10 death ratio county
+
 var county10_d_items=data.sort(function(first,second){
   return second[10]-first[10];
 });
@@ -296,7 +313,7 @@ var county10_d_items=data.sort(function(first,second){
 var countytop_d_items=county10_d_items.filter(function(e){
   return e[4]>5;
 }).slice(0,10);
-console.log(countytop_d_items);
+// console.log(countytop_d_items);
 
 option={
     
@@ -322,7 +339,7 @@ option={
         orient:'vertical',
         left:'left',
         top: 'middle',
-        data: ['Raw Count (->hide me)', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
+        data: ['Raw Count', 'Top 10 Increasing Counties', 'Top 10 Death Ratio'],
         textStyle: {
             color: '#FFC107',
             fontSize: 12
@@ -350,7 +367,7 @@ option={
     series : [
 
         {
-            name: 'Raw Count (->hide me)',
+            name: 'Raw Count',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
@@ -422,7 +439,7 @@ option={
             zlevel: 2
         },
                 {
-            name: 'Top 10 Mortality Rate',
+            name: 'Top 10 Death Ratio',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
@@ -466,6 +483,27 @@ option={
     overlay.setOption(option);
 
   });
+    
+    var day_millisec=86400000;
+
+        var timelineControl = L.timelineSliderControl({
+          formatOutput: function(date){
+            return moment(date).format("YYYY-MM-DD HH:MM:SS");
+          },
+          start: 1584360000000,
+          end: 1584792000000,
+          steps:5
+        });
+
+        var timeline = L.timeline();
+        timeline.on('change', function(e){
+          console.log(moment(e.target.time).format("YYYY-MM-DD HH"));
+          console.log('timeline changed')
+        });
+
+        timelineControl.addTo(map);
+        timelineControl.addTimelines(timeline);
+
 </script>
 
 
