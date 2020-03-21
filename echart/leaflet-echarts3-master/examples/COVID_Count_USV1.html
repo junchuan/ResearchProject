@@ -63,6 +63,7 @@ permalink: /COVID_Count_US.html
         .column {
           float: left;
           padding: 0px;
+          overflow: auto;
           
         }
 
@@ -97,7 +98,7 @@ permalink: /COVID_Count_US.html
           border-radius: 10px;
           height: 50%;
           width: 100%;
-          background-color: #191A1A;
+          background-color: #343332;
 
         }
 
@@ -105,7 +106,7 @@ permalink: /COVID_Count_US.html
             border-radius: 10px;
        
           /*   width: 25%;*/
-          background-color: #191A1A;
+          background-color: #343332;
 
 
         }
@@ -114,7 +115,7 @@ permalink: /COVID_Count_US.html
           border-radius: 10px;
        
         
-          background-color: #191A1A;
+          background-color: #343332;
 
 
         }
@@ -128,8 +129,8 @@ permalink: /COVID_Count_US.html
 <div class="column side">
 
 <div class="column bottomside">
-<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 19762</h1> 
-<p class="infolist" margin-left=10px> last updated: 2020-03-21 10:00am EST</p> 
+<h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 22714</h1> 
+<p class="infolist" margin-left=10px> last updated: 2020-03-21 2:00pm EST</p> 
 <h1 class="infotitle">Top 10 States:</h1>  
 <h2 id='state10' class="infolist"></h2>
 
@@ -217,7 +218,7 @@ var convertData = function (twtdata) {
 
 
 
-$.getJSON('echart/asset/covid_county_cnt_0321_1000.json',function (data) {
+$.getJSON('echart/asset/covid_county_cnt_0321_1400.json',function (data) {
 
   var statecnt_dict={}
   data.map(function(element,idx){
