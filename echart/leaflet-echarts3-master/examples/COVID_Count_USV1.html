@@ -221,7 +221,7 @@ update_date_html="last updated: "+moment().format("YYYY-MM-DD");
 document.getElementById('update_date').innerText=update_date_html;
 
 
-$.getJSON('echart/asset/covid_county_cnt.json',function (data) {
+$.getJSON('echart/asset/covid_county_cnt_0321.json',function (data) {
 
     var total_number= 0;
   data.map(function(element,idx){
@@ -232,7 +232,7 @@ $.getJSON('echart/asset/covid_county_cnt.json',function (data) {
 
   total_number_html="Total Number of Cases: "+total_number.toString();
   document.getElementById('total_number').innerText=total_number_html;
-  
+
 
   var statecnt_dict={}
   data.map(function(element,idx){
