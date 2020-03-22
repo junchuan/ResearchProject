@@ -272,10 +272,10 @@ var timeline = L.timeline(timeline_data);
 
 
 
-update_date_html="last updated: "+moment().format("YYYY-MM-DD");
+
+update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
+console.log(update_date_html);
 document.getElementById('update_date').innerText=update_date_html;
-
-
 
 
 var current_fname="";
@@ -496,10 +496,13 @@ timeline.on('change', function(e){
 
 });
 
+
+
+
+
 timelineControl.addTo(map);
 timelineControl.addTimelines(timeline);
-
-
+timelineControl.setTime(end_time-36000000);
 
     
 

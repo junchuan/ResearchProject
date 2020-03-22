@@ -268,7 +268,7 @@ var timeline = L.timeline(timeline_data);
 
 
 
-update_date_html="last updated: "+moment().format("YYYY-MM-DD");
+update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
 document.getElementById('update_date').innerText=update_date_html;
 
 
@@ -280,7 +280,7 @@ timeline.on('change', function(e){
   var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
 
 
-  f_name="his_covid_county_cnt_"+fname_suffix+".json";
+  f_name="covid_county_cnt_"+fname_suffix+".json";
 
   if(current_fname===f_name){
     console.log(current_fname);
@@ -494,7 +494,7 @@ timeline.on('change', function(e){
 timelineControl.addTo(map);
 timelineControl.addTimelines(timeline);
 
-
+timelineControl.setTime(end_time-36000000);
 
     
 

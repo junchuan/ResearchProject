@@ -6,6 +6,7 @@
     <title>COVID-19 Case Monitoring for U.S. Counties</title>
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         html, body{
             height: 100%;
@@ -35,8 +36,13 @@
         font-family: Tahoma, Geneva, sans-serif;
       }
 
-      a:link {
+      a.more {
     color: #FFC107;
+    text-decoration: underline;
+    
+  }
+        a.more:hover {
+    color: #46bee9;
     text-decoration: underline;
     
   }
@@ -128,6 +134,8 @@
 <div class="column bottomside">
 <h1 class="infotitle" margin-bottom=0px>Total Number of Cases: 13656</h1> 
 <p class="infolist" margin-left=10px> last updated: 2020-03-19 09:00pm EST</p> 
+<p class="infolist" margin-left=10px> <a class="more" href="https://smart-spatial.com/ResearchProject/COVID_US_Timeline.html"> <i class="fa fa-hand-o-right"></i> See the timeline of COVID-19 cases in U.S. counties</a> </p> 
+
 <h1 class="infotitle">Top 10 States:</h1>  
 <h2 id='state10' class="infolist"></h2>
 
@@ -138,7 +146,7 @@
   <h1 class="infotitle">Top 10 Counties:</h1>
   <h2 id='county10' class="infolist"></h2> 
   <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
-  Data source: <a href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
+  Data source: <a class="more" href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
   </p> 
 
 </div>
