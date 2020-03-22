@@ -306,15 +306,15 @@ option={
         subtext: 'Created by GISers from CGIS,UMD',
         left: 'center',
         textStyle: {
-                           color: '#FFC107'
-                         }
+                      color: '#FFC107'
+                    }
                       
 
     },
     tooltip : {
         trigger: 'item',
         formatter: function (params){
-            return params.value[2]+","+params.value[3]+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> death ratio "+params.value[10]+"% </p>";
+            return params.value[2]+","+params.value[3]+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> mortality rate "+params.value[10]+"% </p>";
         }
         
     },

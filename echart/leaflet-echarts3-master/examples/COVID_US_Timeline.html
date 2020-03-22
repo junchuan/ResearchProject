@@ -1,4 +1,6 @@
-
+---
+permalink: /COVID_US_Timeline.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,20 +160,14 @@
 
 <div id="map" class="column middle"></div>
 
-<!-- <div id="topcounty2" class="column bottomside">
-  <h1 class="infotitle"></h1>  
-</div>
-<div id="topcounty3" class="column bottomside">
-  <h1 class="infotitle"></h1>  
-</div>
-<div id="topcounty4" class="column bottomside">
-  <h1 class="infotitle"></h1>  
-</div> -->
 
-<script src="../dist/main.min.js"></script>
-<script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script>
-<!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
-<script src="../libs/leaflet.timeline.js"></script>
+
+<!-- <script src="../dist/main.min.js"></script> -->
+<!-- <script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script> -->
+<!-- <script src="../libs/leaflet.timeline.js"></script> -->
+<script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
+<script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
+<script src="echart/leaflet-echarts3-master/libs/leaflet.timeline.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script>
     var map = L.map('map');
@@ -277,7 +273,6 @@ document.getElementById('update_date').innerText=update_date_html;
 
 
 
-
 var current_fname="";
 timeline.on('change', function(e){
   // console.log(e);
@@ -298,7 +293,7 @@ timeline.on('change', function(e){
 
 
 
-    $.getJSON('../../../echart/asset/'+current_fname,function (data) {
+    $.getJSON('echart/asset/'+current_fname,function (data) {
 
 
       var total_number= 0;
