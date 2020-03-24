@@ -137,11 +137,13 @@
 
 <div class="column side">
 
-<div class="column bottomside">
-<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
+<div id='topstates' class="column bottomside">
+<!-- <h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
 <p id='update_date' class="infolist" margin-left=10px> last updated: </p> 
 <h1 class="infotitle">Top 10 States:</h1>  
-<h2 id='state10' class="infolist"></h2>
+<h2 id='state10' class="infolist"></h2> -->
+
+
 
 </div>
 
@@ -173,6 +175,7 @@
 <!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
 <script src="../libs/leaflet.timeline.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
 <script>
     var map = L.map('map');
     var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
@@ -216,6 +219,64 @@ map.setView(L.latLng(39.20,-96.78), 5);
 var overlay = new L.echartsLayer3(map, echarts);
 var chartsContainer = overlay.getEchartsContainer();
 var myChart = overlay.initECharts(chartsContainer);
+
+
+
+// 
+var top_st = L.map('topstates',{ zoomControl: false ,attributionControl: false});
+top_st.setView(L.latLng(39.20,-96.78), 5);
+var overlay1 = new L.echartsLayer3(top_st, echarts);
+var chartsContainer1 = overlay1.getEchartsContainer();
+var barChart = overlay1.initECharts(chartsContainer1);
+
+
+
+        // specify chart configuration item and data
+        var baroption = {
+    title: {
+        text: '世界人口总量',
+        subtext: '数据来自网络'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['2011年', '2012年']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+    },
+    yAxis: {
+        type: 'category',
+        data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
+    },
+    series: [
+        {
+            name: '2011年',
+            type: 'bar',
+            data: [18203, 23489, 29034, 104970, 131744, 630230]
+        },
+        {
+            name: '2012年',
+            type: 'bar',
+            data: [19325, 23438, 31000, 121594, 134141, 681807]
+        }
+    ]
+};
+;
+
+        // use configuration item and data specified to show chart
+        overlay1.setOption(baroption);
 
 
 
@@ -273,9 +334,9 @@ var timeline = L.timeline(timeline_data);
 
 
 
-update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
-// console.log(update_date_html);
-document.getElementById('update_date').innerText=update_date_html;
+// update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
+// // console.log(update_date_html);
+// document.getElementById('update_date').innerText=update_date_html;
 
 
 var current_fname="";
@@ -310,7 +371,7 @@ timeline.on('change', function(e){
       console.log(total_number);
 
       total_number_html="Total Number of Cases: "+total_number.toString();
-      document.getElementById('total_number').innerText=total_number_html;
+      // document.getElementById('total_number').innerText=total_number_html;
 
           // state10_html="";
     // for (let i=0;i<10;i++){
@@ -348,7 +409,7 @@ timeline.on('change', function(e){
     }
     state10_html=state10_html+"</table>"
        // console.log(state10_html);
-    document.getElementById('state10').innerHTML=state10_html;
+    // document.getElementById('state10').innerHTML=state10_html;
 
 
 
@@ -372,7 +433,7 @@ timeline.on('change', function(e){
     county10_html=county10_html+"</table>"
 
     // console.log(county10_html);
-    document.getElementById('county10').innerHTML=county10_html;
+    // document.getElementById('county10').innerHTML=county10_html;
 
 
     //find top 10 increase county
