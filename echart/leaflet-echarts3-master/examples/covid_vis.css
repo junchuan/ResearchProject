@@ -38,6 +38,24 @@ display: table;
 clear: both;
 }
 
+    a.more {
+    color: #FFC107;
+    text-decoration: underline;
+    
+  }
+        a.more:hover {
+    color: #46bee9;
+    text-decoration: underline;
+    
+  }
+
+.blink_me {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
 
 #map {
     border-radius: 10px;
