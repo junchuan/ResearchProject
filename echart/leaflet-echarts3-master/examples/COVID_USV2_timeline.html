@@ -274,7 +274,7 @@ var timeline = L.timeline(timeline_data);
 
 
 update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
-console.log(update_date_html);
+// console.log(update_date_html);
 document.getElementById('update_date').innerText=update_date_html;
 
 
@@ -285,7 +285,7 @@ timeline.on('change', function(e){
   var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
 
 
-  f_name="his_covid_county_cnt_"+fname_suffix+".json";
+  f_name="covid_county_cnt_"+fname_suffix+".json";
 
   if(current_fname===f_name){
     console.log(current_fname);
@@ -299,7 +299,7 @@ timeline.on('change', function(e){
 
 
     $.getJSON('../../../echart/asset/'+current_fname,function (data) {
-
+      console.log('current_fname');
 
       var total_number= 0;
       data.map(function(element,idx){
@@ -307,6 +307,7 @@ timeline.on('change', function(e){
 
 
       });
+      console.log(total_number);
 
       total_number_html="Total Number of Cases: "+total_number.toString();
       document.getElementById('total_number').innerText=total_number_html;
