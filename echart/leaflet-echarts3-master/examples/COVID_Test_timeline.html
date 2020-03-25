@@ -7,127 +7,9 @@
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
 
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="covid_vis.css">
     
     <style>
-        html, body{
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
-
-        table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {background-color:#FFC107;}
-
-        .infotitle {
-        
-        padding: 10px;
-        text-align: left;
-        color:#FFC107;
-        font-size: 1.2em;
-        font-family: Tahoma, Geneva, sans-serif;
-      }
-
-      a:link {
-    color: #FFC107;
-    text-decoration: underline;
-    
-  }
-      .note {
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-        color:#FFC107;
-        font-size: 0.8em;
-        padding: 10px;
-      }
-
-        .infolist {
-
-        margin:1px;
-        margin-left:5px;
-        padding:1px;
-        text-align: left;
-        color: #FFFF;
-        font-size: 1em;
-        font-family: Tahoma, Geneva, sans-serif;
-      }
-
-        .column {
-          float: left;
-          padding: 0px;
-          
-        }
-
-        /* Left column */
-        .column.side {
-          height:100%;
-          width: 25%;
-        }
-
-        /* Middle column */
-        .column.middle {
-          height:100%;
-          width: 75%;
-        }
-
-        .row:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
-
-      .leaflet-bottom.leaflet-left{
-        width: 100%;
-      }
-      .leaflet-control-container .leaflet-timeline-controls{
-        box-sizing: border-box;
-        width: 100%;
-        margin: 0;
-        margin-bottom: 15px;
-      }
-
-
-
-        #map {
-            border-radius: 10px;
-            padding: 0;
-            margin: 0;
-           
-        }
-
-        .column.bottomside {
-          border-radius: 10px;
-          height: 50%;
-          width: 100%;
-          background-color: #343332;
-
-        }
-
-        #topstate {
-            border-radius: 10px;
-       
-          /*   width: 25%;*/
-          background-color: #343332;
-
-
-        }
-
-        #topcounty {
-          border-radius: 10px;
-       
-        
-          background-color: #343332;
-
-
-        }
 
 
 
@@ -137,13 +19,13 @@
 
 <div class="column side">
 
-<div id='topstates' class="column bottomside">
+<div id='topstate-chart-container' class="column bottomside topstate-chart-container">
 <!-- <h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
 <p id='update_date' class="infolist" margin-left=10px> last updated: </p> 
 <h1 class="infotitle">Top 10 States:</h1>  
 <h2 id='state10' class="infolist"></h2> -->
 
-
+<canvas id="state-chart"></canvas>
 
 </div>
 
@@ -175,7 +57,7 @@
 <!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
 <script src="../libs/leaflet.timeline.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script>
     var map = L.map('map');
     var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
@@ -221,62 +103,56 @@ var chartsContainer = overlay.getEchartsContainer();
 var myChart = overlay.initECharts(chartsContainer);
 
 
+// var data_labels=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+// var data_values=[65, 59, 20, 81, 56, 55, 40];
 
-// 
-var top_st = L.map('topstates',{ zoomControl: false ,attributionControl: false});
-top_st.setView(L.latLng(39.20,-96.78), 5);
-var overlay1 = new L.echartsLayer3(top_st, echarts);
-var chartsContainer1 = overlay1.getEchartsContainer();
-var barChart = overlay1.initECharts(chartsContainer1);
+var refreshStateChart=function(data_labels,data_values){
 
-
-
-        // specify chart configuration item and data
-        var baroption = {
-    title: {
-        text: '世界人口总量',
-        subtext: '数据来自网络'
-    },
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
-    },
-    legend: {
-        data: ['2011年', '2012年']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01]
-    },
-    yAxis: {
-        type: 'category',
-        data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
-    },
-    series: [
-        {
-            name: '2011年',
-            type: 'bar',
-            data: [18203, 23489, 29034, 104970, 131744, 630230]
-        },
-        {
-            name: '2012年',
-            type: 'bar',
-            data: [19325, 23438, 31000, 121594, 134141, 681807]
-        }
-    ]
+var data = {
+  labels: data_labels,
+  datasets: [{
+    label: "Dataset #1",
+    backgroundColor: "rgba(255,99,132,0.2)",
+    borderColor: "rgba(255,99,132,1)",
+    borderWidth: 2,
+    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+    hoverBorderColor: "rgba(255,99,132,1)",
+    data: data_values,
+  }]
 };
-;
 
-        // use configuration item and data specified to show chart
-        overlay1.setOption(baroption);
+var options = {
+  maintainAspectRatio: false,
+  responsive:true,
+  scales: {
+
+    yAxes: [{
+      stacked: true,
+      gridLines: {
+        display: false,
+        color: "rgba(255,99,132,0.2)"
+      }
+    }],
+    xAxes: [{
+      gridLines: {
+        display: false
+      }
+    }]
+  }
+};
+
+
+  Chart.Bar('state-chart', {
+  type:'horizontalBar',
+  options: options,
+  data: data
+});
+
+};
+
+
+
+
 
 
 
@@ -360,7 +236,7 @@ timeline.on('change', function(e){
 
 
     $.getJSON('../../../echart/asset/'+current_fname,function (data) {
-      console.log('current_fname');
+      // console.log(current_fname);
 
       var total_number= 0;
       data.map(function(element,idx){
@@ -395,6 +271,14 @@ timeline.on('change', function(e){
       state10_items=state_items.sort(function(first, second) {
       return second[1] - first[1];
     }).slice(0,10);
+
+      state_labels=state10_items.map(function(v,idx){return v[0]});
+state_values=state10_items.map(function(v,idx){return v[1]});
+      // console.log(state_labels);
+      refreshStateChart(state_labels,state_values);
+
+
+
 
 
     // state10_html="";

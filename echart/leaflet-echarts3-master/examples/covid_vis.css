@@ -38,6 +38,20 @@ display: table;
 clear: both;
 }
 
+
+
+  .leaflet-bottom.leaflet-left{
+    width: 100%;
+  }
+  .leaflet-control-container .leaflet-timeline-controls{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 15px;
+  }
+
+
+
     a.more {
     color: #FFC107;
     text-decoration: underline;
@@ -139,5 +153,21 @@ font-size: 1em;
 font-family: Tahoma, Geneva, sans-serif;
 }
 
+
+
+
+/* chart css*/
+
+
+canvas {
+  border: 1px dotted red;
+}
+
+.topstate-chart-container {
+  position: relative;
+  margin: auto;
+  height: 80vh;
+  width: 80vw;
+}
 
 
