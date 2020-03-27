@@ -159,9 +159,7 @@ font-family: Tahoma, Geneva, sans-serif;
 /* chart css*/
 
 
-canvas {
-  border: 1px dotted red;
-}
+
 
 .topstate-chart-container {
   position: relative;

@@ -108,7 +108,7 @@ var convertData = function (twtdata) {
 // document.getElementById('update_date').innerText=update_date_html;
 
 
-$.getJSON('../../../echart/asset/covid_county_cnt_0322.json',function (data) {
+$.getJSON('../../../echart/asset/covid_county_cnt_0326.json',function (data) {
 
   //   var total_number= 0;
   // data.map(function(element,idx){
@@ -259,7 +259,7 @@ option={
             data: convertData(data),
             symbolSize: function (val) {
                 
-                    return 2.2+ 1.5*Math.sqrt(val[4]);
+                    return 2.2+ 2.2*Math.cbrt(val[4]);
 
             },
 
@@ -295,7 +295,7 @@ option={
             data: convertData(county10_inc_items),
             symbolSize: function (val) {
                 
-                    return 2+ 1.5*Math.sqrt(val[7]);
+                    return 2+ 2*Math.cbrt(val[7]);
 
             },
 
