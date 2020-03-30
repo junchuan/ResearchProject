@@ -327,7 +327,7 @@ var county10_d_items=data.sort(function(first,second){
 
 
 var countytop_d_items=county10_d_items.filter(function(e){
-  return e[4]>5;
+  return e[4]>10;
 }).slice(0,10);
 console.log(countytop_d_items);
 
@@ -390,7 +390,7 @@ option={
             data: convertData(data),
             symbolSize: function (val) {
                 
-                    return 2.2+ 1.5*Math.sqrt(val[4]);
+                    return 3+ Math.sqrt(val[4]);
 
             },
 

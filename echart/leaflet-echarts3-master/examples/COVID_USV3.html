@@ -108,7 +108,7 @@ var convertData = function (twtdata) {
 // document.getElementById('update_date').innerText=update_date_html;
 
 
-$.getJSON('../../../echart/asset/covid_county_cnt_0326.json',function (data) {
+$.getJSON('../../../echart/asset/covid_county_cnt_0330.json',function (data) {
 
   //   var total_number= 0;
   // data.map(function(element,idx){
@@ -196,9 +196,9 @@ var county10_d_items=data.sort(function(first,second){
 
 
 var countytop_d_items=county10_d_items.filter(function(e){
-  return e[4]>5;
+  return e[4]>9;
 }).slice(0,10);
-console.log(countytop_d_items);
+// console.log(countytop_d_items);
 
 option={
     
@@ -259,7 +259,7 @@ option={
             data: convertData(data),
             symbolSize: function (val) {
                 
-                    return 2.2+ 2.2*Math.cbrt(val[4]);
+                    return 2.2+ Math.sqrt(val[4]);
 
             },
 
@@ -295,7 +295,7 @@ option={
             data: convertData(county10_inc_items),
             symbolSize: function (val) {
                 
-                    return 2+ 2*Math.cbrt(val[7]);
+                    return 2.2+ 2*Math.cbrt(val[7]);
 
             },
 

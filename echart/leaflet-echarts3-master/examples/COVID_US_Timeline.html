@@ -468,7 +468,7 @@ timeline.on('change', function(e){
                 data: convertData(data),
                 symbolSize: function (val) {
                     
-                        return 3+ 1.5*Math.sqrt(val[4]);
+                        return 3+ Math.sqrt(val[4]);
 
                 },
 

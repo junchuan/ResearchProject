@@ -400,7 +400,7 @@ state_values=state10_items.map(function(v,idx){return v[1]});
                 data: convertData(data),
                 symbolSize: function (val) {
                     
-                        return 3+ 1.5*Math.sqrt(val[4]);
+                        return 3+ Math.sqrt(val[4]);
 
                 },
 
