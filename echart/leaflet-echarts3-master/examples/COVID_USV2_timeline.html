@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19 Case Monitoring for U.S. Counties</title>
+    <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+    
+    <style>
+        html, body{
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {background-color:#FFC107;}
+
+        .infotitle {
+        
+        padding: 10px;
+        text-align: left;
+        color:#FFC107;
+        font-size: 1.2em;
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+
+      a:link {
+    color: #FFC107;
+    text-decoration: underline;
+    
+  }
+      .note {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        color:#FFC107;
+        font-size: 0.8em;
+        padding: 10px;
+      }
+
+        .infolist {
+
+        margin:1px;
+        margin-left:5px;
+        padding:1px;
+        text-align: left;
+        color: #FFFF;
+        font-size: 1em;
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+
+        .column {
+          float: left;
+          padding: 0px;
+          
+        }
+
+        /* Left column */
+        .column.side {
+          height:100%;
+          width: 25%;
+        }
+
+        /* Middle column */
+        .column.middle {
+          height:100%;
+          width: 75%;
+        }
+
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .leaflet-bottom.leaflet-left{
+        width: 100%;
+      }
+      .leaflet-control-container .leaflet-timeline-controls{
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 15px;
+      }
+
+
+
+        #map {
+            border-radius: 10px;
+            padding: 0;
+            margin: 0;
+           
+        }
+
+        .column.bottomside {
+          border-radius: 10px;
+          height: 50%;
+          width: 100%;
+          background-color: #343332;
+
+        }
+
+        #topstate {
+            border-radius: 10px;
+       
+          /*   width: 25%;*/
+          background-color: #343332;
+
+
+        }
+
+        #topcounty {
+          border-radius: 10px;
+       
+        
+          background-color: #343332;
+
+
+        }
+
+
+
+      </style>
+</head>
+<body>
+
+<div class="column side">
+
+<div class="column bottomside">
+<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
+<p id='update_date' class="infolist" margin-left=10px> last updated: </p> 
+<h1 class="infotitle">Top 10 States:</h1>  
+<h2 id='state10' class="infolist"></h2>
+
+</div>
+
+
+<div class="column bottomside">
+  <h1 class="infotitle">Top 10 Counties:</h1>
+  <h2 id='county10' class="infolist"></h2> 
+  <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
+  Data source: <a href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
+  </p> 
+
+</div>
+</div>
+
+<div id="map" class="column middle"></div>
+
+<!-- <div id="topcounty2" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div>
+<div id="topcounty3" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div>
+<div id="topcounty4" class="column bottomside">
+  <h1 class="infotitle"></h1>  
+</div> -->
+
+<script src="../dist/main.min.js"></script>
+<script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script>
+<!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
+<script src="../libs/leaflet.timeline.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script>
+    var map = L.map('map');
+    var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
+
+    var baseLayers = {
+
+    'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+}),
+
+
+    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+    attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: 'abcd',
+    minZoom: 0,
+    maxZoom: 18,
+    ext: 'png'
+}),
+
+        "OSM": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}),
+
+"Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+    id: 'mapbox/dark-v9',
+    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://coronavirus.1point3acres.com/en">1point3acres</a>',
+    tileSize: 512,
+    zoomOffset: -1
+}).addTo(map)
+
+ 
+};
+
+
+var layercontrol = L.control.layers(baseLayers,{}, {
+    position: "topleft"
+}).addTo(map);
+
+map.setView(L.latLng(39.20,-96.78), 5);
+var overlay = new L.echartsLayer3(map, echarts);
+var chartsContainer = overlay.getEchartsContainer();
+var myChart = overlay.initECharts(chartsContainer);
+
+
+
+var convertData = function (twtdata) {
+    var res = [];
+    for (var i = 0; i < twtdata.length; i++) {
+        
+        res.push({
+                name: "",
+                value: twtdata[i]
+            });
+        }
+    
+    return res;
+};
+
+
+
+var day_millisec=86400000;
+  //01-21-2020 6:00am
+ var start_time= 1579604400000;
+
+var end_time=moment().valueOf();
+var num_days=Math.floor((end_time-start_time)/86400000);
+// console.log('end',end_time);
+
+var timelineControl = L.timelineSliderControl({
+  formatOutput: function(date){
+    return moment(date).format("YYYY-MM-DD");
+  },
+  enableKeyboardControls: true,
+  showTicks: true,
+  duration:80000,
+
+  steps:num_days
+});
+
+
+
+timeline_data={
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "start": start_time,
+        "end": end_time
+      },
+      "geometry": {"type":"Point","coordinates":[-76.9426,38.9869]}
+    }
+  ]
+};
+var timeline = L.timeline(timeline_data);
+
+
+
+
+update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
+console.log(update_date_html);
+document.getElementById('update_date').innerText=update_date_html;
+
+
+var current_fname="";
+timeline.on('change', function(e){
+  // console.log(e);
+  var target_date_str=moment(e.target.time).format("YYYY-MM-DD");
+  var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
+
+
+  f_name="his_covid_county_cnt_"+fname_suffix+".json";
+
+  if(current_fname===f_name){
+    console.log(current_fname);
+
+  }else{
+    // console.log('old fname',current_fname);
+    current_fname=f_name;
+    // console.log('update fname',current_fname);
+  }
+
+
+
+    $.getJSON('../../../echart/asset/'+current_fname,function (data) {
+
+
+      var total_number= 0;
+      data.map(function(element,idx){
+        total_number+=element[4];
+
+
+      });
+
+      total_number_html="Total Number of Cases: "+total_number.toString();
+      document.getElementById('total_number').innerText=total_number_html;
+
+          // state10_html="";
+    // for (let i=0;i<10;i++){
+    //   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
+    // }
+
+      var statecnt_dict={}
+      data.map(function(element,idx){
+        if(element[3] in statecnt_dict){
+          statecnt_dict[element[3]]+=element[4];
+        }else{
+          statecnt_dict[element[3]]=element[4];
+        }
+
+      });
+
+      var state_items = Object.keys(statecnt_dict).map(function(key) {
+      return [key, statecnt_dict[key]];
+    });
+
+      state10_items=state_items.sort(function(first, second) {
+      return second[1] - first[1];
+    }).slice(0,10);
+
+
+    // state10_html="";
+    // for (let i=0;i<10;i++){
+    //   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
+    // }
+
+    state10_html="<table>";
+    for (let i=0;i<state10_items.length;i++){
+      state10_html=state10_html+'<tr>'+'<td>' +state10_items[i][0]+'</td>'+
+    '<td>'+state10_items[i][1]+'</td></tr>'
+    }
+    state10_html=state10_html+"</table>"
+       // console.log(state10_html);
+    document.getElementById('state10').innerHTML=state10_html;
+
+
+
+
+    var county10_items=data.sort(function(first,second){
+      return second[4]-first[4];
+    }).slice(0,10);
+       // console.log(county10_items);
+
+    // county10_html="";
+    // for (let i=0;i<10;i++){
+    //   county10_html=county10_html+'<p class="infolist">'+county10_items[i][2]+', '+county10_items[i][3]+" : "+'<span style="color:#46bee9">'+county10_items[i][4]+'</span>'+'</p>'
+    // }
+
+    county10_html="<table>";
+    for (let i=0;i<county10_items.length;i++){
+      county10_html=county10_html+'<tr>'+'<td>' +county10_items[i][2]+', '+county10_items[i][3]+'</td>'+
+    '<td>'+county10_items[i][4]+'</td></tr>'
+    }
+
+    county10_html=county10_html+"</table>"
+
+    // console.log(county10_html);
+    document.getElementById('county10').innerHTML=county10_html;
+
+
+    //find top 10 increase county
+
+    // var county10_inc_items=data.sort(function(first,second){
+    //   return second[7]-first[7];
+    // }).slice(0,10);
+
+    // console.log(county10_inc_items);
+
+    //find top 10 death ratio county
+
+    // var county10_d_items=data.sort(function(first,second){
+    //   return second[10]-first[10];
+    // });
+
+
+
+    // var countytop_d_items=county10_d_items.filter(function(e){
+    //   return e[4]>5;
+    // }).slice(0,10);
+    // console.log(countytop_d_items);
+
+    option={
+        
+        title: {
+            text: 'Historical number of COVID-19 cases for U.S. Counties',
+            subtext: 'Created by GISers from CGIS,UMD',
+            left: 'center',
+            textStyle: {
+                               color: '#FFC107'
+                             }
+                          
+
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: function (params){
+                return params.value[2]+","+params.value[3]+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> mortality rate "+params.value[10]+"% </p>";
+            }
+            
+        },
+
+        legend: {
+            orient:'vertical',
+            left:'left',
+            top: 'middle',
+            data: ['Raw Count', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
+            textStyle: {
+                color: '#FFC107',
+                fontSize: 12
+            }
+        },
+
+        geo: {
+            map: '',
+            label: {
+                emphasis: {
+                    show: false
+                }
+            },
+            roam: true,
+            itemStyle: {
+                normal: {
+                    areaColor: '#323c48',
+                    borderColor: '#111'
+                },
+                emphasis: {
+                    areaColor: '#2a333d'
+                }
+            }
+        },
+        series : [
+
+            {
+                name: 'Raw Count',
+                type: 'effectScatter',
+                coordinateSystem: 'geo',
+
+                data: convertData(data),
+                symbolSize: function (val) {
+                    
+                        return 3+ 1.5*Math.sqrt(val[4]);
+
+                },
+
+                showEffectOn: 'render',
+                rippleEffect: {
+                    brushType: 'stroke'
+                },
+                hoverAnimation: true,
+                label: {
+                    normal: {
+                        formatter: '{b}',
+                        position: 'right',
+                        show: false
+                    }
+                },
+
+                itemStyle: {
+                    normal: {
+
+                        color: '#46bee9',
+                         shadowBlur: 10,
+                         opacity:0.9
+                         // shadowColor: '#333'
+                    }
+                },
+                zlevel: 1
+            }
+
+
+
+        ]
+    };
+        
+        overlay.setOption(option);
+
+      });
+
+
+
+});
+
+
+
+
+
+timelineControl.addTo(map);
+timelineControl.addTimelines(timeline);
+timelineControl.setTime(end_time-36000000);
+
+    
+
+
+</script>
+
+
+</body>
+</html>
