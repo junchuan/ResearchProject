@@ -1,8 +1,24 @@
+---
+permalink: /BayBridgeTravel.html
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110572102-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110572102-3');
+</script>
+
+
     <meta charset="UTF-8">
-    <title>Track Human Movement from Twitter Data</title>
+    <title>Track Movement Across Bay Bridge</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
     <style>
         html, body, #map {
@@ -15,8 +31,10 @@
 <body>
 <div id="map"></div>
 <script src="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.js"></script>
-<script src="../src/leaflet-echarts.js"></script>
-<script src="../lib/echarts.source.js"></script>
+<script src="echart/leaflet-chart/src/leaflet-echarts.js"></script>
+<script src="echart/leaflet-chart/lib/echarts.source.js"></script>
+<!-- <script src="../src/leaflet-echarts.js"></script> -->
+<!-- <script src="../lib/echarts.source.js"></script> -->
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 <script>
     var map = L.map('map');
