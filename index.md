@@ -1,6 +1,7 @@
 ---
 title: Welcome
 layout: page
+
 ---
 
 
@@ -18,3 +19,6 @@ I also work on federally funded research projects that develop effective computi
 Most of data crunching I do are carried out using python, R and scala.  
 
 Sometimes, I also work as a volunteer data scientist for [DataKind](http://www.datakind.org/).   
+
+
+
