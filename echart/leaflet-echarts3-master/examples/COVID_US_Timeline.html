@@ -333,7 +333,7 @@ timeline.on('change', function(e){
 
       });
 
-      total_number_html="Total Number of Cases: "+total_number.toString();
+      total_number_html="Total Number of Cases: "+total_number.toString()+" ("+target_date_str+")";
       document.getElementById('total_number').innerText=total_number_html;
 
           // state10_html="";
@@ -479,7 +479,7 @@ timeline.on('change', function(e){
                 data: convertData(data),
                 symbolSize: function (val) {
                     
-                        return 3+ Math.sqrt(val[4]);
+                        return 3+ 0.6*Math.sqrt(val[4]);
 
                 },
 
@@ -499,7 +499,7 @@ timeline.on('change', function(e){
                 itemStyle: {
                     normal: {
 
-                        color: '#46bee9',
+                        color: "#8f1515",//'#46bee9'
                          shadowBlur: 10,
                          opacity:0.9
                          // shadowColor: '#333'

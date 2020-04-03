@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
     <meta charset="UTF-8">
     <title>COVID-19 Case Monitoring for U.S. Counties</title>
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
@@ -18,12 +19,13 @@
 
 <div class="column side">
 
-<div class="column bottomside">
-<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
+<div id='topstate-chart-container' class="column bottomside topstate-chart-container">
+<!-- <h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
 <p id='update_date' class="infolist" margin-left=10px> last updated: </p> 
 <h1 class="infotitle">Top 10 States:</h1>  
-<h2 id='state10' class="infolist"></h2>
+<h2 id='state10' class="infolist"></h2> -->
 
+<canvas id="state-chart"></canvas>
 
 </div>
 
@@ -101,6 +103,58 @@ var chartsContainer = overlay.getEchartsContainer();
 var myChart = overlay.initECharts(chartsContainer);
 
 
+// var data_labels=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+// var data_values=[65, 59, 20, 81, 56, 55, 40];
+
+var refreshStateChart=function(data_labels,data_values){
+
+var data = {
+  labels: data_labels,
+  datasets: [{
+    label: "Dataset #1",
+    backgroundColor: "rgba(255,99,132,0.2)",
+    borderColor: "rgba(255,99,132,1)",
+    borderWidth: 2,
+    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+    hoverBorderColor: "rgba(255,99,132,1)",
+    data: data_values,
+  }]
+};
+
+var options = {
+  maintainAspectRatio: false,
+  responsive:true,
+  scales: {
+
+    yAxes: [{
+      stacked: true,
+      gridLines: {
+        display: false,
+        color: "rgba(255,99,132,0.2)"
+      }
+    }],
+    xAxes: [{
+      gridLines: {
+        display: false
+      }
+    }]
+  }
+};
+
+
+  Chart.Bar('state-chart', {
+  
+  options: options,
+  data: data
+});
+
+};
+
+
+
+
+
+
 
 var convertData = function (twtdata) {
     var res = [];
@@ -156,9 +210,9 @@ var timeline = L.timeline(timeline_data);
 
 
 
-update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
-// console.log(update_date_html);
-document.getElementById('update_date').innerText=update_date_html;
+// update_date_html="last updated: "+moment(end_time-36000000).format("YYYY-MM-DD");
+// // console.log(update_date_html);
+// document.getElementById('update_date').innerText=update_date_html;
 
 
 var current_fname="";
@@ -192,9 +246,13 @@ timeline.on('change', function(e){
       });
       console.log(total_number);
 
-      total_number_html="Total Number of Cases: "+total_number.toString() +" ("+target_date_str+")";
-      document.getElementById('total_number').innerText=total_number_html;
+      total_number_html="Total Number of Cases: "+total_number.toString();
+      // document.getElementById('total_number').innerText=total_number_html;
 
+          // state10_html="";
+    // for (let i=0;i<10;i++){
+    //   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
+    // }
 
       var statecnt_dict={}
       data.map(function(element,idx){
@@ -217,9 +275,16 @@ timeline.on('change', function(e){
       state_labels=state10_items.map(function(v,idx){return v[0]});
 state_values=state10_items.map(function(v,idx){return v[1]});
       // console.log(state_labels);
-    
+      refreshStateChart(state_labels,state_values);
 
 
+
+
+
+    // state10_html="";
+    // for (let i=0;i<10;i++){
+    //   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
+    // }
 
     state10_html="<table>";
     for (let i=0;i<state10_items.length;i++){
@@ -228,7 +293,7 @@ state_values=state10_items.map(function(v,idx){return v[1]});
     }
     state10_html=state10_html+"</table>"
        // console.log(state10_html);
-    document.getElementById('state10').innerHTML=state10_html;
+    // document.getElementById('state10').innerHTML=state10_html;
 
 
 
@@ -238,7 +303,10 @@ state_values=state10_items.map(function(v,idx){return v[1]});
     }).slice(0,10);
        // console.log(county10_items);
 
-
+    // county10_html="";
+    // for (let i=0;i<10;i++){
+    //   county10_html=county10_html+'<p class="infolist">'+county10_items[i][2]+', '+county10_items[i][3]+" : "+'<span style="color:#46bee9">'+county10_items[i][4]+'</span>'+'</p>'
+    // }
 
     county10_html="<table>";
     for (let i=0;i<county10_items.length;i++){
@@ -249,7 +317,7 @@ state_values=state10_items.map(function(v,idx){return v[1]});
     county10_html=county10_html+"</table>"
 
     // console.log(county10_html);
-    document.getElementById('county10').innerHTML=county10_html;
+    // document.getElementById('county10').innerHTML=county10_html;
 
 
     //find top 10 increase county
@@ -332,7 +400,7 @@ state_values=state10_items.map(function(v,idx){return v[1]});
                 data: convertData(data),
                 symbolSize: function (val) {
                     
-                        return 3+ 0.6*Math.sqrt(val[4]);
+                        return 3+ Math.sqrt(val[4]);
 
                 },
 
@@ -352,7 +420,7 @@ state_values=state10_items.map(function(v,idx){return v[1]});
                 itemStyle: {
                     normal: {
 
-                        color: "#8f1515", //'#46bee9'
+                        color: '#46bee9',
                          shadowBlur: 10,
                          opacity:0.9
                          // shadowColor: '#333'
