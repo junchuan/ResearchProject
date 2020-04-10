@@ -17,8 +17,8 @@
 <body>
 
 <div id="map"></div>
-<!-- <script src="../dist/main.min.js"></script> -->
-<script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
+<script src="../dist/main.min.js"></script>
+<!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
 <script>
     var map = L.map('map');
     var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
@@ -83,7 +83,7 @@ var convertData = function (twtdata) {
 
 
 
-$.getJSON('echart/asset/covid_county_cnt.json',function (data) {
+$.getJSON('../../../echart/asset/covid_county_cnt_0410.json',function (data) {
 
 
 

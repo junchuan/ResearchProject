@@ -6,36 +6,21 @@
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="covid_vis.css">
-    <style></style>
+    <!-- <link rel="stylesheet" href="covid_vis.css"> -->
+
+
+        <style>
+        html, body, #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
 </head>
 <body>
 
-<div class="column side">
 
-<div class="column bottomside">
-<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: 32638 </h1> 
-<p id='update_date' class="infolist" margin-left=10px> last updated: 2020-03-22 16:00:00 EST </p> 
-<p class="infolist" margin-left=10px> <a class="more blink_me" href="https://smart-spatial.com/ResearchProject/COVID_US_Timeline.html"> <i class="fa fa-hand-o-right"></i> See the timeline of COVID-19 cases in U.S. counties</a> </p> 
-
-<h1 class="infotitle">Top 10 States:</h1>  
-<h2 id='state10' class="infolist"></h2>
-
-</div>
-
-
-<div class="column bottomside">
-  <h1 class="infotitle">Top 10 Counties:</h1>
-  <h2 id='county10' class="infolist"></h2>  
-
-    <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
-  Data source: <a class="more" href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
-</p> 
-
-</div>
-</div>
-
-<div id="map" class="column middle"></div>
+<div id="map"></div>
 
 
 
@@ -121,63 +106,57 @@ $.getJSON('../../../echart/asset/covid_county_cnt_0410.json',function (data) {
   // document.getElementById('total_number').innerText=total_number_html;
 
 
-  var statecnt_dict={}
-  data.map(function(element,idx){
-    if(element[3] in statecnt_dict){
-      statecnt_dict[element[3]]+=element[4];
-    }else{
-      statecnt_dict[element[3]]=element[4];
-    }
+//   var statecnt_dict={}
+//   data.map(function(element,idx){
+//     if(element[3] in statecnt_dict){
+//       statecnt_dict[element[3]]+=element[4];
+//     }else{
+//       statecnt_dict[element[3]]=element[4];
+//     }
 
-  });
+//   });
 
-  var state_items = Object.keys(statecnt_dict).map(function(key) {
-  return [key, statecnt_dict[key]];
-});
+//   var state_items = Object.keys(statecnt_dict).map(function(key) {
+//   return [key, statecnt_dict[key]];
+// });
 
-  state10_items=state_items.sort(function(first, second) {
-  return second[1] - first[1];
-}).slice(0,10);
+//   state10_items=state_items.sort(function(first, second) {
+//   return second[1] - first[1];
+// }).slice(0,10);
 
 
-// state10_html="";
+
+
+// state10_html="<table>";
 // for (let i=0;i<10;i++){
-//   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
+//   state10_html=state10_html+'<tr>'+'<td>' +state10_items[i][0]+'</td>'+
+// '<td>'+state10_items[i][1]+'</td></tr>'
+// }
+// state10_html=state10_html+"</table>"
+
+//    // console.log(state10_html);
+// document.getElementById('state10').innerHTML=state10_html;
+
+
+
+
+// var county10_items=data.sort(function(first,second){
+//   return second[4]-first[4];
+// }).slice(0,10);
+//    // console.log(county10_items);
+
+
+
+
+// county10_html="<table>";
+// for (let i=0;i<10;i++){
+//   county10_html=county10_html+'<tr>'+'<td>' +county10_items[i][2]+', '+county10_items[i][3]+'</td>'+
+// '<td>'+county10_items[i][4]+'</td></tr>'
 // }
 
-state10_html="<table>";
-for (let i=0;i<10;i++){
-  state10_html=state10_html+'<tr>'+'<td>' +state10_items[i][0]+'</td>'+
-'<td>'+state10_items[i][1]+'</td></tr>'
-}
-state10_html=state10_html+"</table>"
-
-   // console.log(state10_html);
-document.getElementById('state10').innerHTML=state10_html;
-
-
-
-
-var county10_items=data.sort(function(first,second){
-  return second[4]-first[4];
-}).slice(0,10);
-   // console.log(county10_items);
-
-// county10_html="";
-// for (let i=0;i<10;i++){
-//   county10_html=county10_html+'<p class="infolist">'+county10_items[i][2]+', '+county10_items[i][3]+" : "+'<span style="color:#46bee9">'+county10_items[i][4]+'</span>'+'</p>'
-// }
-
-
-county10_html="<table>";
-for (let i=0;i<10;i++){
-  county10_html=county10_html+'<tr>'+'<td>' +county10_items[i][2]+', '+county10_items[i][3]+'</td>'+
-'<td>'+county10_items[i][4]+'</td></tr>'
-}
-
-county10_html=county10_html+"</table>"
-// console.log(county10_html);
-document.getElementById('county10').innerHTML=county10_html;
+// county10_html=county10_html+"</table>"
+// // console.log(county10_html);
+// document.getElementById('county10').innerHTML=county10_html;
 
 
 //find top 10 increase county
@@ -188,7 +167,7 @@ var county10_inc_items=data.sort(function(first,second){
 // console.log(county10_inc_items);
 
 
-//find top 10 death ratio county
+// //find top 10 death ratio county
 var county10_d_items=data.sort(function(first,second){
   return second[10]-first[10];
 });
@@ -370,14 +349,6 @@ option={
   });
 </script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-110572102-1', 'auto');
-  ga('send', 'pageview');
-</script>
 
 </body>
 </html>
