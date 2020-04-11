@@ -321,7 +321,7 @@ var county10_inc_items=data.sort(function(first,second){
   return second[7]-first[7];
 }).slice(0,10);
 
-console.log(county10_inc_items);
+// console.log(county10_inc_items);
 
 
 //find top 10 death ratio county
@@ -431,7 +431,7 @@ option={
             data: convertData(county10_inc_items),
             symbolSize: function (val) {
                 
-                    return 2.6+ 1.2*Math.sqrt(val[7]);
+                    return 2.6+ 0.6*Math.sqrt(val[7]);
 
             },
 
@@ -467,7 +467,7 @@ option={
             data: convertData(countytop_d_items),
             symbolSize: function (val) {
                 
-                    return 1.5+ 0.8*Math.abs(val[10]);
+                    return 1.5+ 0.6*Math.abs(val[10]);
 
             },
 
