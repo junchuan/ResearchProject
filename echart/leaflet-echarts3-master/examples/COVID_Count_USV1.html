@@ -283,10 +283,6 @@ $.getJSON('echart/asset/covid_county_cnt_0411.json',function (data) {
 }).slice(0,10);
 
 
-// state10_html="";
-// for (let i=0;i<10;i++){
-//   state10_html=state10_html+'<p class="infolist">'+state10_items[i][0]+' : '+'<span style="color:#46bee9">'+state10_items[i][1]+'</span>'+'</p>'
-// }
 
 state10_html="<table>";
 for (let i=0;i<10;i++){
@@ -306,10 +302,7 @@ var county10_items=data.sort(function(first,second){
 }).slice(0,10);
    // console.log(county10_items);
 
-// county10_html="";
-// for (let i=0;i<10;i++){
-//   county10_html=county10_html+'<p class="infolist">'+county10_items[i][2]+', '+county10_items[i][3]+" : "+'<span style="color:#46bee9">'+county10_items[i][4]+'</span>'+'</p>'
-// }
+
 
 
 county10_html="<table>";
@@ -328,7 +321,7 @@ var county10_inc_items=data.sort(function(first,second){
   return second[7]-first[7];
 }).slice(0,10);
 
-// console.log(county10_inc_items);
+console.log(county10_inc_items);
 
 
 //find top 10 death ratio county
@@ -438,7 +431,7 @@ option={
             data: convertData(county10_inc_items),
             symbolSize: function (val) {
                 
-                    return 2+ 1.5*Math.sqrt(val[7]);
+                    return 2.6+ 1.2*Math.sqrt(val[7]);
 
             },
 
