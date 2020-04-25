@@ -1,6 +1,3 @@
----
-permalink: /COVID_US_Timeline.html
----
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,8 +179,7 @@ permalink: /COVID_US_Timeline.html
   <h1 class="infotitle">Top 10 Counties:</h1>
   <h2 id='county10' class="infolist"></h2> 
   <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
-  Data source: <a class='more' href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
-  </p> 
+  Data source: <a class="more" href="https://github.com/CSSEGISandData/COVID-19/">Johns Hopkins University</a>
 
 </div>
 </div>
@@ -225,7 +221,7 @@ permalink: /COVID_US_Timeline.html
 
 "Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
     id: 'mapbox/dark-v9',
-    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://coronavirus.1point3acres.com/en">1point3acres</a>',
+    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://github.com/CSSEGISandData/COVID-19/">JHU</a>',
     tileSize: 512,
     zoomOffset: -1
 }).addTo(map)
@@ -323,7 +319,7 @@ timeline.on('change', function(e){
 
 
 
-    $.getJSON('echart/asset/'+current_fname,function (data) {
+$.getJSON('echart/asset/'+current_fname,function (data) {
 
 
       var total_number= 0;

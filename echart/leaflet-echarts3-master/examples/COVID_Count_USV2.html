@@ -1,21 +1,163 @@
+---
+permalink: /COVID_Count_US.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110572102-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110572102-3');
+</script>
+
     <meta charset="UTF-8">
     <title>COVID-19 Case Monitoring for U.S. Counties</title>
     <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="covid_vis.css">
-    <style></style>
+    <style>
+        html, body{
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {background-color:#FFC107;}
+
+
+      a.more {
+    color: #FFC107;
+    text-decoration: underline;
+    
+  }
+        a.more:hover {
+    color: #46bee9;
+    text-decoration: underline;
+    
+  }
+
+  .blink_me {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+
+     .note {
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        color:#FFC107;
+        font-size: 0.9em;
+        padding: 10px;
+      }
+
+        .infotitle {
+        
+        padding: 10px;
+        text-align: left;
+        color:#FFC107;
+        font-size: 1.2em;
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+
+        .infolist {
+
+        margin:1px;
+        margin-left:5px;
+        padding:1px;
+        text-align: left;
+        color: #FFFF;
+        font-size: 1em;
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+
+        .column {
+          float: left;
+          padding: 0px;
+          overflow: auto;
+          
+        }
+
+        /* Left column */
+        .column.side {
+          height:100%;
+          width: 25%;
+        }
+
+        /* Middle column */
+        .column.middle {
+          height:100%;
+          width: 75%;
+        }
+
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+
+
+        #map {
+            border-radius: 10px;
+            padding: 0;
+            margin: 0;
+           
+        }
+
+        .column.bottomside {
+          border-radius: 10px;
+          height: 50%;
+          width: 100%;
+          background-color: #343332;
+
+        }
+
+        #topstate {
+            border-radius: 10px;
+       
+          /*   width: 25%;*/
+          background-color: #343332;
+
+
+        }
+
+        #topcounty {
+          border-radius: 10px;
+       
+        
+          background-color: #343332;
+
+
+        }
+
+
+
+      </style>
 </head>
 <body>
 
 <div class="column side">
 
 <div class="column bottomside">
-<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: 32638 </h1> 
-<p id='update_date' class="infolist" margin-left=10px> last updated: 2020-03-22 16:00:00 EST </p> 
+<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
+<p id='update_date' class="infolist" margin-left=10px> last updated:  </p>
 <p class="infolist" margin-left=10px> <a class="more blink_me" href="https://smart-spatial.com/ResearchProject/COVID_US_Timeline.html"> <i class="fa fa-hand-o-right"></i> See the timeline of COVID-19 cases in U.S. counties</a> </p> 
 
 <h1 class="infotitle">Top 10 States:</h1>  
@@ -28,8 +170,8 @@
   <h1 class="infotitle">Top 10 Counties:</h1>
   <h2 id='county10' class="infolist"></h2>  
 
-    <p class='note'>Contribution: Visualization by Junchuan Fan. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from CGIS, University of Maryland, College Park. </br>
-  Data source: <a class="more" href="https://coronavirus.1point3acres.com/en">1Point3Acres</a>
+    <p class='note'>Contribution: Visualization by <a class='more' href="http://terpconnect.umd.edu/~jcfan" >Junchuan Fan</a>. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from <a class='more' href="https://geospatial.umd.edu/" >CGIS</a>, University of Maryland, College Park. </br>
+  Data source: <a class="more" href="https://github.com/CSSEGISandData/COVID-19/">Johns Hopkins University</a>
 </p> 
 
 </div>
@@ -38,11 +180,10 @@
 <div id="map" class="column middle"></div>
 
 
-
-<script src="../dist/main.min.js"></script>
-<script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script>
-<!-- <script src="echart/echarts-gl-test/lib/jquery.min.js"></script> -->
-<!-- <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script> -->
+<!-- <script src="../dist/main.min.js"></script> -->
+<!-- <script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script> -->
+<script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
+<script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 
 <script>
@@ -71,7 +212,7 @@
 
     "Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
     id: 'mapbox/dark-v9',
-    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://coronavirus.1point3acres.com/en">1point3acres</a>',
+    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://github.com/CSSEGISandData/COVID-19/">JHU</a>',
     tileSize: 512,
     zoomOffset: -1
 }).addTo(map)
@@ -104,8 +245,6 @@ var convertData = function (twtdata) {
     return res;
 };
 
-
-
 update_date_html="last updated: "+moment(moment().valueOf()-21600000).format("YYYY-MM-DD");
 document.getElementById('update_date').innerText=update_date_html;
 
@@ -113,7 +252,7 @@ var target_date_str=moment(moment().valueOf()-21600000).format("YYYY-MM-DD");
 var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
 f_name="covid_county_cnt_"+fname_suffix+".json";
 
-$.getJSON('../../../echart/asset/'+f_name,function (data) {
+$.getJSON('echart/asset/'+f_name,function (data) {
 
 
   var total_number= 0;
@@ -131,12 +270,13 @@ $.getJSON('../../../echart/asset/'+f_name,function (data) {
   });
    // console.log(total_number);
 
-  total_number_html="Total Number of Cases for US: "+total_number.toString();
+  total_number_html="Total Number of Cases for US: "+total_number.toString() ;
   document.getElementById('total_number').innerText=total_number_html;
 
 
 
-  var statecnt_dict={}
+
+var statecnt_dict={}
   data.map(function(element,idx){
   if (element[11]=='US'){
 
@@ -171,6 +311,14 @@ document.getElementById('state10').innerHTML=state10_html;
 
 
 
+
+
+
+
+var county10_items=data.sort(function(first,second){
+  return second[4]-first[4];
+}).slice(0,10);
+   // console.log(county10_items);
 
 
 
@@ -211,6 +359,8 @@ var countytop_d_items=county10_d_items.filter(function(e){
 
 
 
+
+
 option={
     
     title: {
@@ -236,9 +386,8 @@ option={
           if(params.value.length==12){
           region_name=region_name+params.value[11];
           }
-
-
-            return region_name+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> mortality rate "+params.value[10]+"% </p>";
+          
+          return region_name+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> mortality rate "+params.value[10]+"% </p>";
         }
         
     },
@@ -246,7 +395,7 @@ option={
     legend: {
         orient:'vertical',
         left:'left',
-        top: 'center',
+        top: 'middle',
         data: ['Raw Count (->hide me)', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
         textStyle: {
             color: '#FFC107',
@@ -292,7 +441,6 @@ option={
                 brushType: 'stroke',
                 period: 10,
                 scale: 2
-
             },
             hoverAnimation: true,
             label: {
@@ -307,13 +455,13 @@ option={
                 normal: {
 
                     color: '#46bee9',
-                    shadowBlur: 10,
+                     shadowBlur: 10,
                      opacity:0.8
                      // shadowColor: '#333'
                 }
             },
             zlevel: 1
-         },       
+        },        
         {
             name: 'Top 10 Increasing Counties',
             type: 'effectScatter',
@@ -328,9 +476,7 @@ option={
 
             showEffectOn: 'render',
             rippleEffect: {
-                brushType: 'stroke',
-                period: 10,
-
+                brushType: 'stroke'
             },
             hoverAnimation: true,
             label: {
@@ -399,14 +545,6 @@ option={
   });
 </script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-110572102-1', 'auto');
-  ga('send', 'pageview');
-</script>
 
 </body>
 </html>

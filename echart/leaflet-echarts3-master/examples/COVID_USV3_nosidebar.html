@@ -79,6 +79,7 @@ var myChart = overlay.initECharts(chartsContainer);
 var convertData = function (twtdata) {
     var res = [];
     for (var i = 0; i < twtdata.length; i++) {
+        console.log(twtdata[i]);
         
         res.push({
                 name: "",
@@ -93,14 +94,16 @@ var convertData = function (twtdata) {
 // document.getElementById('update_date').innerText=update_date_html;
 
 
-$.getJSON('../../../echart/asset/covid_county_cnt_0410.json',function (data) {
-
-  //   var total_number= 0;
-  // data.map(function(element,idx){
-  //   total_number+=element[4];
+$.getJSON('covid_county_cnt_0425_US.json',function (data) {
 
 
-  // });
+    var total_number= 0;
+  data.map(function(element,idx){
+    // console.log(element);
+    total_number+=element[4];
+
+
+  });
 
   // total_number_html="Total Number of Cases: "+total_number.toString();
   // document.getElementById('total_number').innerText=total_number_html;
