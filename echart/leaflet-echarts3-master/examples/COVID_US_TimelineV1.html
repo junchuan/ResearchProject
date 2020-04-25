@@ -247,19 +247,12 @@ var convertData = function (twtdata) {
     var res = [];
     for (var i = 0; i < twtdata.length; i++) {
         
-        if (twtdata[i].length==12 && twtdata[i][11]!='US_NGEO'){
-            res.push({
-                name: "",
-                value: twtdata[i]
-            });
-
-        }else if (twtdata[i].length<12){
-            res.push({
+        res.push({
                 name: "",
                 value: twtdata[i]
             });
         }
-        }    
+    
     return res;
 };
 
@@ -338,7 +331,7 @@ $.getJSON('echart/asset/'+current_fname,function (data) {
 
     total_number+=element[4];
   }
-  else if(element[11]=='US' || element[11]=='US_NGEO'){
+  else if(element[11]=='US' || element[11]=='US_NOGEO'){
      
 
     total_number+=element[4];
