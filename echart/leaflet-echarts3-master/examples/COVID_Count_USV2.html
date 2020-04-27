@@ -245,7 +245,7 @@ var convertData = function (twtdata) {
     return res;
 };
 
-update_date_html="last updated: "+moment(moment().valueOf()-28800000).format("YYYY-MM-DD");
+update_date_html="last updated: "+moment(moment().valueOf()-28800000+120000).format("YYYY-MM-DD");
 document.getElementById('update_date').innerText=update_date_html;
 
 var target_date_str=moment(moment().valueOf()-28800000).format("YYYY-MM-DD");
