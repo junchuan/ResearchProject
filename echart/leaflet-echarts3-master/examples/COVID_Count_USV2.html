@@ -225,7 +225,7 @@ var layercontrol = L.control.layers(baseLayers,{}, {
     position: "topleft"
 }).addTo(map);
 
-map.setView(L.latLng(39.20,-86.78), 6);
+map.setView(L.latLng(39.20,-96.78), 5);
 var overlay = new L.echartsLayer3(map, echarts);
 var chartsContainer = overlay.getEchartsContainer();
 var myChart = overlay.initECharts(chartsContainer);
