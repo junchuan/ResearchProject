@@ -3,548 +3,559 @@ permalink: /COVID_Count_US.html
 ---
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110572102-3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110572102-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'UA-110572102-3');
-</script>
+    gtag('config', 'UA-110572102-3');
+  </script>
 
-    <meta charset="UTF-8">
-    <title>COVID-19 Case Monitoring for U.S. Counties</title>
-    <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        html, body{
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <title>COVID-19 Case Monitoring for U.S. Counties</title>
+  <!-- <link rel="stylesheet" href="../leaflet/leaflet.css"> -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/leaflet/0.7.7/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
 
-        table {
-  border-collapse: collapse;
-  width: 100%;
-}
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-    th, td {
+    th,
+    td {
       padding: 8px;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
 
-    tr:hover {background-color:#FFC107;}
+    tr:hover {
+      background-color: #FFC107;
+    }
 
 
-      a.more {
-    color: #FFC107;
-    text-decoration: underline;
-    
-  }
-        a.more:hover {
-    color: #46bee9;
-    text-decoration: underline;
-    
-  }
+    a.more {
+      color: #FFC107;
+      text-decoration: underline;
 
-  .blink_me {
-  animation: blinker 2s linear infinite;
-}
+    }
 
-@keyframes blinker {  
-  50% { opacity: 0; }
-}
+    a.more:hover {
+      color: #46bee9;
+      text-decoration: underline;
 
-     .note {
-        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-        color:#FFC107;
-        font-size: 0.9em;
-        padding: 10px;
+    }
+
+    .blink_me {
+      animation: blinker 2s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% {
+        opacity: 0;
       }
+    }
 
-        .infotitle {
-        
-        padding: 10px;
-        text-align: left;
-        color:#FFC107;
-        font-size: 1.2em;
-        font-family: Tahoma, Geneva, sans-serif;
-      }
+    .note {
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #FFC107;
+      font-size: 0.9em;
+      padding: 10px;
+    }
 
-        .infolist {
+    .infotitle {
 
-        margin:1px;
-        margin-left:5px;
-        padding:1px;
-        text-align: left;
-        color: #FFFF;
-        font-size: 1em;
-        font-family: Tahoma, Geneva, sans-serif;
-      }
+      padding: 10px;
+      text-align: left;
+      color: #FFC107;
+      font-size: 1.2em;
+      font-family: Tahoma, Geneva, sans-serif;
+    }
 
-        .column {
-          float: left;
-          padding: 0px;
-          overflow: auto;
-          
-        }
+    .infolist {
 
-        /* Left column */
-        .column.side {
-          height:100%;
-          width: 25%;
-        }
+      margin: 1px;
+      margin-left: 5px;
+      padding: 1px;
+      text-align: left;
+      color: #FFFF;
+      font-size: 1em;
+      font-family: Tahoma, Geneva, sans-serif;
+    }
 
-        /* Middle column */
-        .column.middle {
-          height:100%;
-          width: 75%;
-        }
+    .column {
+      float: left;
+      padding: 0px;
+      overflow: auto;
 
-        .row:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
+    }
 
+    /* Left column */
+    .column.side {
+      height: 100%;
+      width: 25%;
+    }
 
+    /* Middle column */
+    .column.middle {
+      height: 100%;
+      width: 75%;
+    }
 
-        #map {
-            border-radius: 10px;
-            padding: 0;
-            margin: 0;
-           
-        }
-
-        .column.bottomside {
-          border-radius: 10px;
-          height: 50%;
-          width: 100%;
-          background-color: #343332;
-
-        }
-
-        #topstate {
-            border-radius: 10px;
-       
-          /*   width: 25%;*/
-          background-color: #343332;
-
-
-        }
-
-        #topcounty {
-          border-radius: 10px;
-       
-        
-          background-color: #343332;
-
-
-        }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
 
 
 
-      </style>
+    #map {
+      border-radius: 10px;
+      padding: 0;
+      margin: 0;
+
+    }
+
+    .column.bottomside {
+      border-radius: 10px;
+      height: 50%;
+      width: 100%;
+      background-color: #343332;
+
+    }
+
+    #topstate {
+      border-radius: 10px;
+
+      /*   width: 25%;*/
+      background-color: #343332;
+
+
+    }
+
+    #topcounty {
+      border-radius: 10px;
+
+
+      background-color: #343332;
+
+
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="column side">
+  <div class="column side">
 
-<div class="column bottomside">
-<h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1> 
-<p id='update_date' class="infolist" margin-left=10px> last updated:  </p>
-<p class="infolist" margin-left=10px> <a class="more blink_me" href="https://smart-spatial.com/ResearchProject/COVID_US_Timeline.html"> <i class="fa fa-hand-o-right"></i> See the timeline of COVID-19 cases in U.S. counties</a> </p> 
+    <div class="column bottomside">
+      <h1 id="total_number" class="infotitle" margin-bottom=0px>Total Number of Cases: </h1>
+      <p id='update_date' class="infolist" margin-left=10px> last updated: </p>
+      <p class="infolist" margin-left=10px> <a class="more blink_me"
+          href="https://smart-spatial.com/ResearchProject/COVID_US_Timeline.html"> <i class="fa fa-hand-o-right"></i>
+          See the timeline of COVID-19 cases in U.S. counties</a> </p>
 
-<h1 class="infotitle">Top 10 States:</h1>  
-<h2 id='state10' class="infolist"></h2>
+      <h1 class="infotitle">Top 10 States:</h1>
+      <h2 id='state10' class="infolist"></h2>
 
-</div>
-
-
-<div class="column bottomside">
-  <h1 class="infotitle">Top 10 Counties:</h1>
-  <h2 id='county10' class="infolist"></h2>  
-
-    <p class='note'>Contribution: Visualization by <a class='more' href="http://terpconnect.umd.edu/~jcfan" >Junchuan Fan</a>. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from <a class='more' href="https://geospatial.umd.edu/" >CGIS</a>, University of Maryland, College Park. </br>
-  Data source: <a class="more" href="https://github.com/CSSEGISandData/COVID-19/">Johns Hopkins University</a>
-</p> 
-
-</div>
-</div>
-
-<div id="map" class="column middle"></div>
+    </div>
 
 
-<!-- <script src="../dist/main.min.js"></script> -->
-<!-- <script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script> -->
-<script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
-<script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <div class="column bottomside">
+      <h1 class="infotitle">Top 10 Counties:</h1>
+      <h2 id='county10' class="infolist"></h2>
 
-<script>
+      <p class='note'>Contribution: Visualization by <a class='more' href="http://terpconnect.umd.edu/~jcfan">Junchuan
+          Fan</a>. Data collection by Junchuan Fan, Hai Lan, Yao Li, Jeff Sauer, Zhiyue Xia,Guiming Zhu from <a
+          class='more' href="https://geospatial.umd.edu/">CGIS</a>, University of Maryland, College Park. </br>
+        Data source: <a class="more" href="https://github.com/CSSEGISandData/COVID-19/">Johns Hopkins University</a>
+      </p>
+
+    </div>
+  </div>
+
+  <div id="map" class="column middle"></div>
+
+
+  <!-- <script src="../dist/main.min.js"></script> -->
+  <!-- <script src="../../../echart/echarts-gl-test/lib/jquery.min.js"></script> -->
+  <script src="echart/echarts-gl-test/lib/jquery.min.js"></script>
+  <script src="echart/leaflet-echarts3-master/dist/main.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
+  <script>
     var map = L.map('map');
-    var mapboxAccessToken='pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
+    var mapboxAccessToken = 'pk.eyJ1IjoianVuY2h1YW4iLCJhIjoiY2o4bHowcWF1MHVkeTMybXY1ZDE2aHk4OSJ9.HF2W8s1GNuY550GcjRsRBw';
 
     var baseLayers = {
 
-    'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-}),
+      'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      }),
 
 
-    "StamenTerrain" :L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
-    attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    subdomains: 'abcd',
-    minZoom: 0,
-    maxZoom: 18,
-    ext: 'png'
-}),
+      "StamenTerrain": L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
+        attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: 'abcd',
+        minZoom: 0,
+        maxZoom: 18,
+        ext: 'png'
+      }),
 
-    "OSM": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}),
+      "OSM": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }),
 
-    "Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-    id: 'mapbox/dark-v9',
-    attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://github.com/CSSEGISandData/COVID-19/">JHU</a>',
-    tileSize: 512,
-    zoomOffset: -1
-}).addTo(map)
-
- 
-};
+      "Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+        id: 'mapbox/dark-v9',
+        attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://github.com/CSSEGISandData/COVID-19/">JHU</a>',
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map)
 
 
-var layercontrol = L.control.layers(baseLayers,{}, {
-    position: "topleft"
-}).addTo(map);
-
-map.setView(L.latLng(39.20,-96.78), 5);
-var overlay = new L.echartsLayer3(map, echarts);
-var chartsContainer = overlay.getEchartsContainer();
-var myChart = overlay.initECharts(chartsContainer);
+    };
 
 
+    var layercontrol = L.control.layers(baseLayers, {}, {
+      position: "topleft"
+    }).addTo(map);
 
-var convertData = function (twtdata) {
-    var res = [];
-    for (var i = 0; i < twtdata.length; i++) {
-        
+    map.setView(L.latLng(39.20, -96.78), 5);
+    var overlay = new L.echartsLayer3(map, echarts);
+    var chartsContainer = overlay.getEchartsContainer();
+    var myChart = overlay.initECharts(chartsContainer);
+
+
+
+    var convertData = function (twtdata) {
+      var res = [];
+      for (var i = 0; i < twtdata.length; i++) {
+
         res.push({
-                name: "",
-                value: twtdata[i]
-            });
+          name: "",
+          value: twtdata[i]
+        });
+      }
+
+      return res;
+    };
+
+    update_date_html = "last updated: " + moment(moment().valueOf() - 28800000 + 120000).format("YYYY-MM-DD");
+    document.getElementById('update_date').innerText = update_date_html;
+
+    var target_date_str = moment(moment().valueOf() - 28800000).format("YYYY-MM-DD");
+    var fname_suffix = target_date_str.split("-")[1] + target_date_str.split("-")[2];
+    f_name = "covid_county_cnt_" + fname_suffix + ".json";
+
+    $.getJSON('echart/asset/' + f_name, function (data) {
+
+
+      var total_number = 0;
+      data.map(function (element, idx) {
+
+        if (element.length < 12) {
+
+          total_number += element[4];
         }
-    
-    return res;
-};
-
-update_date_html="last updated: "+moment(moment().valueOf()-28800000+120000).format("YYYY-MM-DD");
-document.getElementById('update_date').innerText=update_date_html;
-
-var target_date_str=moment(moment().valueOf()-28800000).format("YYYY-MM-DD");
-var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
-f_name="covid_county_cnt_"+fname_suffix+".json";
-
-$.getJSON('echart/asset/'+f_name,function (data) {
+        else if (element[11] == 'US' || element[11] == 'US_NOGEO') {
 
 
-  var total_number= 0;
-  data.map(function(element,idx){
-
-  if (element.length<12){
-
-    total_number+=element[4];
-  }
-  else if(element[11]=='US' || element[11]=='US_NOGEO'){
-     
-
-    total_number+=element[4];
-  }
-  });
-   // console.log(total_number);
-
-  total_number_html="Total Number of Cases for US: "+total_number.toString() ;
-  document.getElementById('total_number').innerText=total_number_html;
-
-
-
-
-var statecnt_dict={}
-  data.map(function(element,idx){
-  if (element[11]=='US'){
-
-    if(element[3] in statecnt_dict){
-      statecnt_dict[element[3]]+=element[4];
-    }else{
-      statecnt_dict[element[3]]=element[4];
-    }
-
-  }
-
-  });
-
-  var state_items = Object.keys(statecnt_dict).map(function(key) {
-  return [key, statecnt_dict[key]];
-});
-
-  state10_items=state_items.sort(function(first, second) {
-  return second[1] - first[1];
-}).slice(0,10);
-
-
-state10_html="<table>";
-for (let i=0;i<10;i++){
-  state10_html=state10_html+'<tr>'+'<td>' +state10_items[i][0]+'</td>'+
-'<td>'+state10_items[i][1]+'</td></tr>'
-}
-state10_html=state10_html+"</table>"
-
-   // console.log(state10_html);
-document.getElementById('state10').innerHTML=state10_html;
-
-
-
-
-
-
-
-var county10_items=data.sort(function(first,second){
-  return second[4]-first[4];
-}).slice(0,10);
-   // console.log(county10_items);
-
-
-
-var county10_items=data.filter(element => element[11]=='US').sort(function(first,second){
-  return second[4]-first[4];
-}).slice(0,10);
-   // console.log(county10_items);
-
-county10_html="<table>";
-for (let i=0;i<10;i++){
-  county10_html=county10_html+'<tr>'+'<td>' +county10_items[i][2]+', '+county10_items[i][3]+'</td>'+
-'<td>'+county10_items[i][4]+'</td></tr>'
-}
-
-county10_html=county10_html+"</table>"
-// console.log(county10_html);
-document.getElementById('county10').innerHTML=county10_html;
-
-
-//find top 10 increase county
-var county10_inc_items=data.filter(element => element[11]=='US').sort(function(first,second){
-  return second[7]-first[7];
-}).slice(0,10);
-
-// console.log(county10_inc_items);
-
-
-
-//find top 10 death ratio county
-var county10_d_items=data.filter(element => element[11]=='US').sort(function(first,second){
-  return second[10]-first[10];
-});
-
-var countytop_d_items=county10_d_items.filter(function(e){
-  return e[4]>100;
-}).slice(0,10);
-// console.log(countytop_d_items);
-
-
-
-
-
-option={
-    
-    title: {
-        text: 'Latest number of COVID-19 cases for U.S. Counties',
-        subtext: 'Created by GISers from CGIS,UMD',
-        left: 'center',
-        textStyle: {
-                      color: '#FFC107'
-                    }
-                      
-
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: function (params){
-          region_name="";
-          if(params.value[2]!='NA'){
-            region_name=region_name+params.value[2]+",";
-          }
-          if(params.value[3]!='NA'){
-            region_name=region_name+params.value[3]+",";
-          }
-          if(params.value.length==12){
-          region_name=region_name+params.value[11];
-          }
-          
-          return region_name+"<p style='margin:2px'>"+params.value[4]+" positive cases </p>"+"<p style='margin:2px'> increase "+params.value[7]+" cases </p>"+"<p style='margin:2px'> mortality rate "+params.value[10]+"% </p>";
+          total_number += element[4];
         }
-        
-    },
+      });
+      // console.log(total_number);
 
-    legend: {
-        orient:'vertical',
-        left:'left',
-        top: 'bottom',
-        data: ['Raw Count (->hide me)', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
-        textStyle: {
+      total_number_html = "Total Number of Cases for US: " + total_number.toString();
+      document.getElementById('total_number').innerText = total_number_html;
+
+
+
+
+      var statecnt_dict = {}
+      data.map(function (element, idx) {
+        if (element[11] == 'US') {
+
+          if (element[3] in statecnt_dict) {
+            statecnt_dict[element[3]] += element[4];
+          } else {
+            statecnt_dict[element[3]] = element[4];
+          }
+
+        }
+
+      });
+
+      var state_items = Object.keys(statecnt_dict).map(function (key) {
+        return [key, statecnt_dict[key]];
+      });
+
+      state10_items = state_items.sort(function (first, second) {
+        return second[1] - first[1];
+      }).slice(0, 10);
+
+
+      state10_html = "<table>";
+      for (let i = 0; i < 10; i++) {
+        state10_html = state10_html + '<tr>' + '<td>' + state10_items[i][0] + '</td>' +
+          '<td>' + state10_items[i][1] + '</td></tr>'
+      }
+      state10_html = state10_html + "</table>"
+
+      // console.log(state10_html);
+      document.getElementById('state10').innerHTML = state10_html;
+
+
+
+
+
+
+
+      var county10_items = data.sort(function (first, second) {
+        return second[4] - first[4];
+      }).slice(0, 10);
+      // console.log(county10_items);
+
+
+
+      var county10_items = data.filter(element => element[11] == 'US').sort(function (first, second) {
+        return second[4] - first[4];
+      }).slice(0, 10);
+      // console.log(county10_items);
+
+      county10_html = "<table>";
+      for (let i = 0; i < 10; i++) {
+        county10_html = county10_html + '<tr>' + '<td>' + county10_items[i][2] + ', ' + county10_items[i][3] + '</td>' +
+          '<td>' + county10_items[i][4] + '</td></tr>'
+      }
+
+      county10_html = county10_html + "</table>"
+      // console.log(county10_html);
+      document.getElementById('county10').innerHTML = county10_html;
+
+
+      //find top 10 increase county
+      var county10_inc_items = data.filter(element => element[11] == 'US').sort(function (first, second) {
+        return second[7] - first[7];
+      }).slice(0, 10);
+
+      // console.log(county10_inc_items);
+
+
+
+      //find top 10 death ratio county
+      var county10_d_items = data.filter(element => element[11] == 'US').sort(function (first, second) {
+        return second[10] - first[10];
+      });
+
+      var countytop_d_items = county10_d_items.filter(function (e) {
+        return e[4] > 100;
+      }).slice(0, 10);
+      // console.log(countytop_d_items);
+
+
+
+
+
+      option = {
+
+        title: {
+          text: 'Latest number of COVID-19 cases for U.S. Counties',
+          subtext: 'Created by GISers from CGIS,UMD',
+          left: 'center',
+          textStyle: {
+            color: '#FFC107'
+          }
+
+
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function (params) {
+            region_name = "";
+            if (params.value[2] != 'NA') {
+              region_name = region_name + params.value[2] + ",";
+            }
+            if (params.value[3] != 'NA') {
+              region_name = region_name + params.value[3] + ",";
+            }
+            if (params.value.length == 12) {
+              region_name = region_name + params.value[11];
+            }
+
+            return region_name + "<p style='margin:2px'>" + params.value[4] + " positive cases </p>" + "<p style='margin:2px'> increase " + params.value[7] + " cases </p>" + "<p style='margin:2px'> mortality rate " + params.value[10] + "% </p>";
+          }
+
+        },
+
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          top: 'bottom',
+          data: ['Raw Count (->hide me)', 'Top 10 Increasing Counties', 'Top 10 Mortality Rate'],
+          textStyle: {
             color: '#FFC107',
             fontSize: 14
+          },
+          zlevel: 1
         },
-        zlevel: 1
-    },
 
-    geo: {
-        map: '',
-        label: {
+        geo: {
+          map: '',
+          label: {
             emphasis: {
-                show: false
+              show: false
             }
-        },
-        roam: true,
-        itemStyle: {
+          },
+          roam: true,
+          itemStyle: {
             normal: {
-                areaColor: '#323c48',
-                borderColor: '#111'
+              areaColor: '#323c48',
+              borderColor: '#111'
             },
             emphasis: {
-                areaColor: '#2a333d'
+              areaColor: '#2a333d'
             }
-        }
-    },
-    series : [
+          }
+        },
+        series: [
 
-        {
+          {
             name: 'Raw Count (->hide me)',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
             data: convertData(data),
             symbolSize: function (val) {
-                
-                    return 3+ 0.3*Math.sqrt(val[4]);
+
+              return 3 + 0.2 * Math.log(val[4]);
 
             },
 
             showEffectOn: 'emphasis',
             rippleEffect: {
-                brushType: 'stroke',
-                period: 10,
-                scale: 2
+              brushType: 'stroke',
+              period: 10,
+              scale: 2
             },
             hoverAnimation: true,
             label: {
-                normal: {
-                    formatter: '{b}',
-                    position: 'right',
-                    show: false
-                }
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: false
+              }
             },
 
             itemStyle: {
-                normal: {
+              normal: {
 
-                    color: '#46bee9',
-                     shadowBlur: 10,
-                     opacity:0.8
-                     // shadowColor: '#333'
-                }
+                color: '#46bee9',
+                shadowBlur: 10,
+                opacity: 0.8
+                // shadowColor: '#333'
+              }
             },
             zlevel: 1
-        },        
-        {
+          },
+          {
             name: 'Top 10 Increasing Counties',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
             data: convertData(county10_inc_items),
             symbolSize: function (val) {
-                
-                    return 2.6+ 0.6*Math.sqrt(val[7]);
+
+              return 2.6 + 0.6 * Math.log(val[7]);
 
             },
 
             showEffectOn: 'render',
             rippleEffect: {
-                brushType: 'stroke'
+              brushType: 'stroke'
             },
             hoverAnimation: true,
             label: {
-                normal: {
-                    formatter: '{b}',
-                    position: 'right',
-                    show: false
-                }
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: false
+              }
             },
 
             itemStyle: {
-                normal: {
+              normal: {
 
-                    color: '#a6c84c',
-                     shadowBlur: 10,
-                     opacity:0.8
-                     // shadowColor: '#333'
-                }
+                color: '#a6c84c',
+                shadowBlur: 10,
+                opacity: 0.8
+                // shadowColor: '#333'
+              }
             },
             zlevel: 2
-        },
-                {
+          },
+          {
             name: 'Top 10 Mortality Rate',
             type: 'effectScatter',
             coordinateSystem: 'geo',
 
             data: convertData(countytop_d_items),
             symbolSize: function (val) {
-                
-                    return 1.5+ 0.6*Math.abs(val[10]);
+
+              return 1.5 + 0.6 * Math.abs(val[10]);
 
             },
 
             showEffectOn: 'render',
             rippleEffect: {
-                brushType: 'stroke'
+              brushType: 'stroke'
             },
             hoverAnimation: true,
             label: {
-                normal: {
-                    formatter: '{b}',
-                    position: 'right',
-                    show: false
-                }
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: false
+              }
             },
 
             itemStyle: {
-                normal: {
+              normal: {
 
-                    color: '#a3242f',
-                     shadowBlur: 10,
-                     opacity:0.8
-                     // shadowColor: '#333'
-                }
+                color: '#a3242f',
+                shadowBlur: 10,
+                opacity: 0.8
+                // shadowColor: '#333'
+              }
             },
             zlevel: 3
-        }
+          }
 
 
 
-    ]
-};
-    
-    overlay.setOption(option);
+        ]
+      };
 
-  });
-</script>
+      overlay.setOption(option);
+
+    });
+  </script>
 
 
 </body>
+
 </html>
