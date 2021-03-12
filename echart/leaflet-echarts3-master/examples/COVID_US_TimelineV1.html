@@ -499,7 +499,8 @@ document.getElementById('county10').innerHTML=county10_html;
                 data: convertData(data),
                 symbolSize: function (val) {
                     
-                        return 3+ 0.3*Math.sqrt(val[4]);
+                  return 3 +  Math.log(val[4]);
+                        
 
                 },
 
