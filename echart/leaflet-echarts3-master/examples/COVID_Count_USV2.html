@@ -218,14 +218,14 @@ permalink: /COVID_Count_US.html
       "OSM": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }),
+      }).addTo(map),
 
       "Mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
         id: 'mapbox/dark-v9',
         attribution: 'Map tiles by <a href="https://https://www.mapbox.com/">Mapbox</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; Data Source from <a href="https://github.com/CSSEGISandData/COVID-19/">JHU</a>',
         tileSize: 512,
         zoomOffset: -1
-      }).addTo(map)
+      })
 
 
     };
@@ -258,8 +258,11 @@ permalink: /COVID_Count_US.html
     update_date_html = "last updated: " + moment(moment().valueOf() - 28800000 + 120000).format("YYYY-MM-DD");
     document.getElementById('update_date').innerText = update_date_html;
 
-    var target_date_str = moment(moment().valueOf() - 28800000).format("YYYY-MM-DD");
-    var fname_suffix = target_date_str.split("-")[1] + target_date_str.split("-")[2];
+    // var target_date_str = moment(moment().valueOf() - 28800000).format("YYYY-MM-DD");
+    // var fname_suffix = target_date_str.split("-")[1] + target_date_str.split("-")[2];
+    var target_date_str = moment(moment().valueOf() - 28800000).format("MMDDYYYY");
+    var fname_suffix = target_date_str;
+
     f_name = "covid_county_cnt_" + fname_suffix + ".json";
 
     $.getJSON('echart/asset/' + f_name, function (data) {

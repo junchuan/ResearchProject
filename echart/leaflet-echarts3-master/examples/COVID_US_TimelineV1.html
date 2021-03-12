@@ -304,8 +304,11 @@ document.getElementById('update_date').innerText=update_date_html;
 var current_fname="";
 timeline.on('change', function(e){
   // console.log(e);
-  var target_date_str=moment(e.target.time).format("YYYY-MM-DD");
-  var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
+  // var target_date_str=moment(e.target.time).format("YYYY-MM-DD");
+  // var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
+
+  var target_date_str = moment(moment().valueOf() - 28800000).format("MMDDYYYY");
+  var fname_suffix = target_date_str;
 
 
   f_name="covid_county_cnt_"+fname_suffix+".json";
