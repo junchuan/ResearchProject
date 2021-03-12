@@ -308,7 +308,8 @@ timeline.on('change', function(e){
   // var target_date_str=moment(e.target.time).format("YYYY-MM-DD");
   // var fname_suffix=target_date_str.split("-")[1]+target_date_str.split("-")[2];
 
-  var target_date_str = moment(moment().valueOf() - 28800000).format("MMDDYYYY");
+  var target_date_str=moment(e.target.time).format("MMDDYYYY");
+ 
   var fname_suffix = target_date_str;
 
 
