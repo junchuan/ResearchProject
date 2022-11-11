@@ -87,7 +87,7 @@ JB :
   analytics : 
     provider : google
     google :
-      tracking_id: UA-110572102-1
+      tracking_id: G-6RQYZH878V
 
   # Settings for sharing helper.
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.
